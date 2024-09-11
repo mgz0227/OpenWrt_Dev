@@ -8,7 +8,7 @@ sed -i "/telephony/d" feeds.conf.default
 sed -i "s?targets/%S/packages?targets/%S/\$(LINUX_VERSION)?" include/feeds.mk
 
 sed -i '/	refresh_config();/d' scripts/feeds
-
+rm -rf feeds/miaogongzi/shortcut-fe
 ./scripts/feeds update -a
 ./scripts/feeds install -a -p miaogongzi -f
 ./scripts/feeds install -a
