@@ -297,18 +297,6 @@ jobs:
               echo "DOCKERTAG=${{ secrets.DOCKER_ID }}/openwrt-nginx:latest" >> $GITHUB_ENV
               fi
 
-    - name: Deploy imagebuilder to server
-      uses: easingthemes/ssh-deploy@main
-      continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
-      with:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        ARGS: "-avzr"
-        SOURCE: openwrt/bin/targets
-        REMOTE_HOST: ${{ secrets.SERVER_HOST }}
-        REMOTE_PORT: ${{ secrets.SERVER_PORT }}
-        REMOTE_USER: root
-        TARGET: "/www/wwwroot/op.miaogongzi.cc/23.05"
 
     - name: Deploy imagebuilder to Ubuntuserver
       uses: easingthemes/ssh-deploy@main
@@ -321,7 +309,7 @@ jobs:
         REMOTE_HOST: ${{ secrets.HOST }}
         REMOTE_PORT: ${{ secrets.PORT }}
         REMOTE_USER: root
-        TARGET: "/www/wwwroot/op.miaogongzi.cc/23.05"
+        TARGET: "/www/wwwroot/op.miaogongzi.cc/23.05/Dev"
 
     - name: Upload firmware for artifact
       uses: actions/upload-artifact@main
