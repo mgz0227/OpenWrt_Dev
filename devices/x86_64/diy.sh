@@ -4,7 +4,7 @@ SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
 bash $SHELL_FOLDER/../common/kernel_6.6.sh
 
-git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.6
+git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.10
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
 
@@ -38,6 +38,6 @@ CONFIG_MMC_SDHCI=y
 CONFIG_MMC_SDHCI_ACPI=y
 CONFIG_MMC_SDHCI_PCI=y
 CONFIG_DRM_I915=y
-' >> ./target/linux/x86/config-6.6
+' >> ./target/linux/x86/config-6.10
 
 sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
