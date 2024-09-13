@@ -125,11 +125,18 @@ jobs:
       run: |
         BRANCH_INFO="$(curl -gs -H 'Content-Type: application/json' \
           -H "Authorization: Bearer ${{ secrets.TOKEN_MGZ0227 }}" \
-          -X POST -d '{ "query": "query {repository(owner: \"mgz0227\", name: \"openwrt\") {refs(refPrefix: \"refs/heads/\", first: 1, query: \"Dev\") {nodes {name}}}}"}' https://api.github.com/graphql)"
+          -X POST -d '{ "query": "query {repository(owner: \"mgz0227\", name: \"openwrt\") {refs(refPrefix: \"refs/heads/\", first: 10) {nodes {name}}}}"}' https://api.github.com/graphql)"
 
-          REPO_BRANCH="$( echo ${BRANCH_INFO} | jq -r '.data.repository.refs.nodes[].name' )"
+          # 获取 Dev 分支，如果找不到则退出或选择其他分支
+          REPO_BRANCH="$( echo ${BRANCH_INFO} | jq -r '.data.repository.refs.nodes[] | select(.name == "Dev") | .name' )"
+
+          if [[ -z "$REPO_BRANCH" ]]; then
+              echo "Dev branch not found, using default branch"
+              REPO_BRANCH="main"  # 或者设置为其他默认分支
+          fi
 
           git clone $REPO_URL -b $REPO_BRANCH openwrt
+
 
     
     - name: Free up disk space
