@@ -124,24 +124,12 @@ jobs:
     - name: Clone source code
       run: |
         BRANCH_INFO="$(curl -gs -H 'Content-Type: application/json' \
-           -H "Authorization: Bearer ${{ secrets.TOKEN_MGZ0227 }}" \
-           -X POST -d '{ "query": "query {repository(owner: \"mgz0227\", name: \"openwrt\") {refs(refPrefix: \"refs/heads/\", first: 4, orderBy: {field: TAG_COMMIT_DATE, direction: DESC}) {nodes {name target { ... on Commit {committedDate}}}}}}"}' https://api.github.com/graphql)"
-        BRANCH_DATE="$( echo ${BRANCH_INFO} | jq -r '.data.repository.refs.nodes[] | select(.name | startswith("Dev")) | .target.committedDate' | head -n 1)"
-        if [[ $(( $(date +%s) - ($(date -d "$BRANCH_DATE" +%s)) / 86400 )) -lt 30 ]]; then
-        REPO_BRANCH="$( echo ${BRANCH_INFO} | jq -r '.data.repository.refs.nodes[].name' | grep Dev | head -n 1)"
-        else
-        REPO_BRANCH="Dev"
-        fi
-        #echo "CONFIG_VERSION_REPO=\"https://op.miaogongzi.cc/`echo $REPO_BRANCH  | cut -d . -f 1,2 | sed -e 's/^v//'`\"">>devices/common/.config
-        echo "CONFIG_VERSION_REPO=\"https://op.miaogongzi.cc/23.05\"">>devices/common/.config
-        if [[ ! "${{ env.REPO_BRANCH }}" && "$REPO_URL" == "https://github.com/openwrt/openwrt" ]]; then
-            git clone $REPO_URL -b $REPO_BRANCH openwrt
-          elif [[ ! "${{ env.REPO_BRANCH }}" ]]; then
-            git clone $REPO_URL openwrt
-        else
-            git clone $REPO_URL -b ${{ env.REPO_BRANCH }} openwrt
-            echo "git clone $REPO_URL -b ${{ env.REPO_BRANCH }} openwrt"
-        fi
+          -H "Authorization: Bearer ${{ secrets.TOKEN_MGZ0227 }}" \
+          -X POST -d '{ "query": "query {repository(owner: \"mgz0227\", name: \"openwrt\") {refs(refPrefix: \"refs/heads/\", first: 1, query: \"Dev\") {nodes {name}}}}"}' https://api.github.com/graphql)"
+
+          REPO_BRANCH="$( echo ${BRANCH_INFO} | jq -r '.data.repository.refs.nodes[].name' )"
+
+          git clone $REPO_URL -b $REPO_BRANCH openwrt
 
     
     - name: Free up disk space
