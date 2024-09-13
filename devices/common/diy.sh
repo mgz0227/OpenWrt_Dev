@@ -8,7 +8,7 @@ sed -i "/telephony/d" feeds.conf.default
 sed -i "s?targets/%S/packages?targets/%S/\$(LINUX_VERSION)?" include/feeds.mk
 
 sed -i '/	refresh_config();/d' scripts/feeds
-rm -rf feeds/miaogongzi/shortcut-fe
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a -p miaogongzi -f
 ./scripts/feeds install -a
@@ -49,10 +49,10 @@ sed -i "s/192.168.1/192.168.3/" package/base-files/files/bin/config_generate
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
 
-git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-6.10
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-6.10/
+git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-6.6
+wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-6.6/
 
-sed -i "s/CONFIG_WERROR=y/CONFIG_WERROR=n/" target/linux/generic/config-6.10
+sed -i "s/CONFIG_WERROR=y/CONFIG_WERROR=n/" target/linux/generic/config-6.6
 
 sed -i "s/no-lto,$/no-lto no-mold,$/" include/package.mk
 
