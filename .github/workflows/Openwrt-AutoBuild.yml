@@ -123,19 +123,17 @@ jobs:
         [ "$VERSION" ] && echo "VERSION=$VERSION" >> $GITHUB_ENV || echo "VERSION=$(date +'%m.%d')" >> $GITHUB_ENV
     - name: Clone source code
       run: |
-        BRANCH_INFO="$(curl -gs -H 'Content-Type: application/json' \
-          -H "Authorization: Bearer ${{ secrets.TOKEN_MGZ0227 }}" \
-          -X POST -d '{ "query": "query {repository(owner: \"mgz0227\", name: \"openwrt\") {refs(refPrefix: \"refs/heads/\", first: 10) {nodes {name}}}}"}' https://api.github.com/graphql)"
+            # 检查是否存在 Dev 分支
+            if git ls-remote --heads https://github.com/mgz0227/openwrt | grep -q "refs/heads/Dev"; then
+                REPO_BRANCH="Dev"
+              else
+                echo "Dev branch not found, using default branch"
+                REPO_BRANCH="main"  # 或者 "master"
+            fi
 
-          # 获取 Dev 分支，如果找不到则退出或选择其他分支
-          REPO_BRANCH="$( echo ${BRANCH_INFO} | jq -r '.data.repository.refs.nodes[] | select(.name == "Dev") | .name' )"
+            # 克隆仓库
+            git clone https://github.com/mgz0227/openwrt -b $REPO_BRANCH openwrt
 
-          if [[ -z "$REPO_BRANCH" ]]; then
-              echo "Dev branch not found, using default branch"
-              REPO_BRANCH="main"  # 或者设置为其他默认分支
-          fi
-
-          git clone $REPO_URL -b $REPO_BRANCH openwrt
 
 
     
