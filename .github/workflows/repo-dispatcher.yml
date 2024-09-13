@@ -12,8 +12,8 @@ on:
   # push: 
   #   branches:
   #     - master
-  schedule:
-    - cron: '0 9 * * *'
+ # schedule:
+ #   - cron: '0 9 * * *'
   workflow_dispatch:
     inputs:
       param:
