@@ -2,7 +2,7 @@
 
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
-bash $SHELL_FOLDER/../common/kernel_6.6.sh
+#bash $SHELL_FOLDER/../common/kernel_6.6.sh
 
 git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.10
 
@@ -13,10 +13,9 @@ mv target/linux/x86/64/config-6.6 target/linux/x86/64/config-6.10
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/firmware/linux-firmware/intel.mk -P package/firmware/linux-firmware/
 
-wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.10 -P include/
+wget -N https://raw.githubusercontent.com/mgz0227/openwrt/Dev/include/kernel-6.10 -P include/
 rm -rf target/linux/generic/backport-6.6/822-v6.11-0012-nvmem-Fix-return-type-of-devm_nvmem_device_get-in-ke.patch
 rm -rf target/linux/generic/backport-6.6/200-regmap-maple-work-around-false-positive-warning.patch
-wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/target/linux/x86/Makefile target/linux/x86/
 
 
 sed -i 's/kmod-r8169/kmod-r8168/' target/linux/x86/image/64.mk
