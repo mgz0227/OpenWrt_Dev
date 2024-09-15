@@ -1,3 +1,5 @@
+--- a/config/Config-kernel.in
++++ b/config/Config-kernel.in
 @@ -426,6 +426,7 @@
  
  config KERNEL_DEBUG_INFO_BTF
