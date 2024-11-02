@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-git_clone_path main https://github.com/openwrt/openwrt target/linux/generic target/linux/generic/
-git_clone_path main https://github.com/openwrt/openwrt target/linux/x86 target/linux/x86/
-git_clone_path main https://github.com/openwrt/openwrt include include/
+git_clone_path main https://github.com/openwrt/openwrt target/linux/generic
+git_clone_path main https://github.com/openwrt/openwrt target/linux/x86
+git_clone_path main https://github.com/openwrt/openwrt include
 
 wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
 
