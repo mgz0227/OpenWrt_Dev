@@ -1,5 +1,17 @@
 #!/bin/bash
 
+
+
+wget -N https://github.com/openwrt/openwrt/blob/openwrt-24.10/target/linux/generic -P target/linux/
+wget -N https://github.com/openwrt/openwrt/tree/openwrt-24.10/target/linux/x86 -P target/linux/
+wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
+#rm -rf target/linux/generic/hack-6.6/645-netfilter-connmark-introduce-set-dscpmark.patch
+#rm -rf target/linux/generic/backport-6.6/780-25-v6.12-r8169-add-tally-counter-fields-added-with-RTL8125.patch
+#rm -rf target/linux/generic/pending-6.6/684-gso-fix-gso-fraglist-segmentation-after-pull-from-fr.patch
+#wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/target/linux/generic/backport-6.6/819-v6.8-0005-nvmem-core-Rework-layouts-to-become-regular-devices.patch target/linux/generic/backport-6.6/
+
+
+
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
 bash $SHELL_FOLDER/../common/kernel_6.6.sh
@@ -7,17 +19,6 @@ bash $SHELL_FOLDER/../common/kernel_6.6.sh
 git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.6
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
-
-
-
-wget -N https://github.com/openwrt/openwrt/blob/openwrt-24.10/target/linux/generic -P target/linux/
-
-wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
-#rm -rf target/linux/generic/hack-6.6/645-netfilter-connmark-introduce-set-dscpmark.patch
-#rm -rf target/linux/generic/backport-6.6/780-25-v6.12-r8169-add-tally-counter-fields-added-with-RTL8125.patch
-#rm -rf target/linux/generic/pending-6.6/684-gso-fix-gso-fraglist-segmentation-after-pull-from-fr.patch
-#wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/target/linux/generic/backport-6.6/819-v6.8-0005-nvmem-core-Rework-layouts-to-become-regular-devices.patch target/linux/generic/backport-6.6/
-
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/64/config-6.6 -P target/linux/x86/64/
 
