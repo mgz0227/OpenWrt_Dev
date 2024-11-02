@@ -1,10 +1,5 @@
 #!/bin/bash
 
-
-git_clone_path main https://github.com/openwrt/openwrt target/linux/generic
-git_clone_path main https://github.com/openwrt/openwrt target/linux/x86
-git_clone_path main https://github.com/openwrt/openwrt include
-
 wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
 
 #rm -rf target/linux/generic/hack-6.6/645-netfilter-connmark-introduce-set-dscpmark.patch
