@@ -4,6 +4,9 @@ shopt -s extglob
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
 bash $SHELL_FOLDER/../common/kernel_6.1.sh
+git_clone_path main https://github.com/openwrt/openwrt target/linux/generic
+git_clone_path main https://github.com/openwrt/openwrt target/linux/x86
+git_clone_path main https://github.com/openwrt/openwrt include
 
 git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-6.6
 rm -rf target/linux/generic/hack-6.6/767-net-phy-realtek*
