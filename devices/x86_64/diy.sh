@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-
-wget -N https://github.com/openwrt/openwrt/tree/openwrt-24.10/target/linux/generic/ -P target/linux/
-wget -N https://github.com/openwrt/openwrt/tree/openwrt-24.10/target/linux/x86/ -P target/linux/
+git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt target/linux/generic/ target/linux/generic/
+git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt target/linux/x86/ target/linux/x86/
+git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt include/ include/
 wget -N hhttps://github.com/openwrt/openwrt/tree/openwrt-24.10/include/ -P include/
 wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
 
