@@ -4,7 +4,7 @@
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt target/linux/generic/ target/linux/generic/
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt target/linux/x86/ target/linux/x86/
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt include/ include/
-wget -N hhttps://github.com/openwrt/openwrt/tree/openwrt-24.10/include/ -P include/
+
 wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
 
 #rm -rf target/linux/generic/hack-6.6/645-netfilter-connmark-introduce-set-dscpmark.patch
