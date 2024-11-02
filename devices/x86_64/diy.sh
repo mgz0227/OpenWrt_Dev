@@ -11,6 +11,7 @@ wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/
 
 
 wget -N https://github.com/openwrt/openwrt/blob/openwrt-23.05/target/linux/generic -P target/linux/generic
+wget -N https://github.com/openwrt/openwrt/tree/openwrt-24.10/target/linux/x86 -P target/linux/x86
 
 wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
 #rm -rf target/linux/generic/hack-6.6/645-netfilter-connmark-introduce-set-dscpmark.patch
