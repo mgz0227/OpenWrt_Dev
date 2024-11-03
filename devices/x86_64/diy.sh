@@ -7,7 +7,7 @@ wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.
 #rm -rf target/linux/generic/pending-6.6/684-gso-fix-gso-fraglist-segmentation-after-pull-from-fr.patch
 #wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/target/linux/generic/backport-6.6/819-v6.8-0005-nvmem-core-Rework-layouts-to-become-regular-devices.patch target/linux/generic/backport-6.6/
 cp -rf devices/common/patches/rootfstargz.patch.main devices/common/patches/rootfstargz.patch
-cp -rf devices/common/patches/qca-ssdk.patch.main devices/common/patches/qca-ssdk.patch
+#cp -rf devices/common/patches/qca-ssdk.patch.main devices/common/patches/qca-ssdk.patch
 cp -rf devices/common/patches/ebpf.patch.main devices/common/patches/ebpf.patch
 cp -rf devices/common/patches/nonshared.patch.main devices/common/patches/nonshared.patch
 
