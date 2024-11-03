@@ -11,7 +11,7 @@ wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.
 
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
-bash $SHELL_FOLDER/../common/kernel_6.6.sh
+#bash $SHELL_FOLDER/../common/kernel_6.6.sh
 
 git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.6
 
