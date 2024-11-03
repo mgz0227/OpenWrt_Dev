@@ -20,24 +20,24 @@ cp -rf devices/common/patches/qca-ssdk.patch.main devices/common/patches/qca-ssd
 cp -rf devices/common/patches/ebpf.patch.main devices/common/patches/ebpf.patch
 cp -rf devices/common/patches/nonshared.patch.main devices/common/patches/nonshared.patch
 
-git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-6.1
+#git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-6.1
 
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-6.1/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-6.1/
+#wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-6.1/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-6.1/
 
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
+#wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
 
 rm -rf target/linux/generic/hack-6.1/{410-block-fit-partition-parser.patch,724-net-phy-aquantia*,720-net-phy-add-aqr-phys.patch}
 
-wget -N https://raw.githubusercontent.com/openwrt/openwrt/main/include/u-boot.mk -P include/
+#wget -N https://raw.githubusercontent.com/openwrt/openwrt/main/include/u-boot.mk -P include/
 
-wget -N https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/package/kernel/mt76/patches/0001-mt76-allow-VHT-rate-on-2.4GHz.patch -P package/kernel/mt76/patches/
+#wget -N https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/package/kernel/mt76/patches/0001-mt76-allow-VHT-rate-on-2.4GHz.patch -P package/kernel/mt76/patches/
 
 cd feeds/packages
 rm -rf kernel libs/xr_usb_serial_common net/xtables-addons
 git_clone_path master https://github.com/openwrt/packages kernel libs/xr_usb_serial_common net/xtables-addons
 cd ../../
 
-wget -N https://raw.githubusercontent.com/openwrt/packages/master/net/coova-chilli/patches/011-kernel517.patch -P package/feeds/packages/coova-chilli/patches/
+#wget -N https://raw.githubusercontent.com/openwrt/packages/master/net/coova-chilli/patches/011-kernel517.patch -P package/feeds/packages/coova-chilli/patches/
 
 sed -i 's/=bbr/=cubic/' package/kernel/linux/files/sysctl-tcp-bbr.conf
 
