@@ -3,6 +3,7 @@
 shopt -s extglob
 
 sed -i '$a src-git miaogongzi https://github.com/mgz0227/OP-Packages.git;master' feeds.conf.default
+#sed -i 's/23.05/24.10/g' feeds.conf.default
 sed -i "/telephony/d" feeds.conf.default
 
 sed -i "s?targets/%S/packages?targets/%S/\$(LINUX_VERSION)?" include/feeds.mk
@@ -15,10 +16,14 @@ sed -i '/	refresh_config();/d' scripts/feeds
 
 rm -rf package/base-files
 mv -f feeds/miaogongzi/base-files package/
+#rm -rf package/net/nginx
+#rm -rf package/net/nginx-util
+#mv -f feeds/miaogongzi/nginx package/net/
+#mv -f feeds/miaogongzi/nginx-util package/net/
 
 echo "$(date +"%s")" >version.date
 sed -i '/$(curdir)\/compile:/c\$(curdir)/compile: package/opkg/host/compile' package/Makefile
-sed -i "s/DEFAULT_PACKAGES:=/DEFAULT_PACKAGES:=luci-app-advancedplus luci-app-firewall luci-app-opkg luci-app-upnp \
+sed -i "s/DEFAULT_PACKAGES:=/DEFAULT_PACKAGES:=luci-app-advancedplus luci-app-firewall luci-app-opkg luci-app-upnp luci-app-syscontrol \
 luci-app-wizard luci-base luci-compat luci-lib-ipkg luci-lib-fs \
 luci-app-argon-config luci-app-ddns-go luci-app-openclash luci-app-adblock tcpdump-mini luci-app-nlbwmon \
 coremark wget-ssl curl autocore htop nano zram-swap kmod-lib-zstd kmod-tcp-bbr bash openssh-sftp-server block-mount resolveip ds-lite swconfig luci-app-fan luci-app-fileassistant /" include/target.mk
@@ -36,24 +41,28 @@ while [[ "$status" == "in_progress" || "$status" == "queued" ]];do
 	status=$(curl -H "Authorization: token $REPO_TOKEN" -s "https://api.github.com/repos/mgz0227/OP-Packages/actions/runs" | jq -r '.workflow_runs[0].status')
 done
 
-rm -rf package/feeds/packages/v4l2loopback  package/feeds/miaogongzi/accel-ppp
+rm -rf package/feeds/packages/v4l2loopback  package/feeds/miaogongzi/accel-ppp package/network/utils/xdp-tools
 
 mv -f feeds/miaogongzi/r81* tmp/
 
-#wget -N https://raw.githubusercontent.com/openwrt/packages/master/lang/golang/golang/Makefile -P feeds/packages/lang/golang/golang/
+wget -N https://raw.githubusercontent.com/openwrt/packages/master/lang/golang/golang/Makefile -P feeds/packages/lang/golang/golang/
 
 sed -i "s/192.168.1/192.168.3/" package/base-files/files/bin/config_generate
 
 #sed -i "/call Build\/check-size,\$\$(KERNEL_SIZE)/d" include/image.mk
 
-#wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
+wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
 
-#git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-5.15
-#wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-5.15/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-5.15/
+git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-6.6
+wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-6.6/
 
 sed -i "s/CONFIG_WERROR=y/CONFIG_WERROR=n/" target/linux/generic/config-6.6
 
 sed -i "s/no-lto,$/no-lto no-mold,$/" include/package.mk
+
+[ -d package/kernel/mt76 ] && {
+wget -N https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/package/kernel/mt76/patches/0001-mt76-allow-VHT-rate-on-2.4GHz.patch -P package/kernel/mt76/patches/
+}
 
 grep -q 'PKG_RELEASE:=9' package/libs/openssl/Makefile && {
 sh -c "curl -sfL https://github.com/openwrt/openwrt/commit/a48d0bdb77eb93f7fba6e055dace125c72755b6a.patch | patch -d './' -p1 --forward"
