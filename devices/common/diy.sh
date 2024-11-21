@@ -15,7 +15,7 @@ sed -i '/	refresh_config();/d' scripts/feeds
 
 rm -rf package/base-files
 mv -f feeds/miaogongzi/base-files package/
-
+rm -rf package/feeds/miaogongzi/shortcut-fe
 echo "$(date +"%s")" >version.date
 sed -i '/$(curdir)\/compile:/c\$(curdir)/compile: package/opkg/host/compile' package/Makefile
 sed -i "s/DEFAULT_PACKAGES:=/DEFAULT_PACKAGES:=luci-app-advancedplus luci-app-firewall luci-app-package-manager luci-app-upnp \
