@@ -1,0 +1,11 @@
+--- a/target/linux/stm32/modules.mk
++++ b/target/linux/stm32/modules.mk
+@@ -64,7 +64,7 @@
+   KCONFIG:=CONFIG_VIDEO_STM32_DCMI
+   FILES:=$(LINUX_DIR)/drivers/media/platform/st/stm32/stm32-dcmi.ko
+   AUTOLOAD:=$(call AutoProbe,stm32-dcmi)
+-  $(call AddDepends/video,@TARGET_stm32 +kmod-video-videobuf2 +kmod-video-dma-contig +kmod-video-async +kmod-video-fwnode)
++  $(call AddDepends/video,@TARGET_stm32 +kmod-video-videobuf2 +kmod-video-dma-contig +LINUX_6_12:kmod-video-async +LINUX_6_12:kmod-video-fwnode)
+ endef
+ 
+ $(eval $(call KernelPackage,stm32-dcmi))
