@@ -9,3 +9,17 @@
  endef
  
  $(eval $(call KernelPackage,stm32-dcmi))
+
+
+
+--- a/package/kernel/linux/modules/video.mk
++++ b/package/kernel/linux/modules/video.mk
+@@ -628,7 +628,7 @@
+ define KernelPackage/video-core
+   SUBMENU:=$(VIDEO_MENU)
+   TITLE=Video4Linux support
+-  DEPENDS:=+PACKAGE_kmod-i2c-core:kmod-i2c-core +kmod-media-controller
++  DEPENDS:=+PACKAGE_kmod-i2c-core:kmod-i2c-core +LINUX_6_12:kmod-media-controller
+   KCONFIG:= \
+ 	CONFIG_MEDIA_CAMERA_SUPPORT=y \
+ 	CONFIG_VIDEO_DEV \
