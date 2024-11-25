@@ -12,7 +12,7 @@ wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/firmware/linux-firmware/intel.mk -P package/firmware/linux-firmware/
 
-
+wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
 #内核升级模块
 #开始
 #rm -rf target/linux/generic/backport-6.6/777-netfilter-xtables-fix-typo-causing-some-targets-to-not-load-on-IPv6.patch
