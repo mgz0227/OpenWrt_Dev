@@ -4,11 +4,11 @@ SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
 #bash $SHELL_FOLDER/../common/kernel_6.6.sh
 
-#git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.12
+git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.12
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
 
-#wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/64/config-6.12 -P target/linux/x86/64/
+wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/64/config-6.12 -P target/linux/x86/64/
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/firmware/linux-firmware/intel.mk -P package/firmware/linux-firmware/
 
@@ -18,8 +18,7 @@ wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kerne
 #rm -rf target/linux/generic/backport-6.6/777-netfilter-xtables-fix-typo-causing-some-targets-to-not-load-on-IPv6.patch
 #rm -rf target/linux/generic/backport-6.6/780-24-v6.12-r8169-avoid-unsolicited-interrupts.patch
 #rm -rf target/linux/generic/backport-6.6/409-mtd-spi-nor-winbond-fix-w25q128-regression.patch
-rm -rf package/kernel/linux/*
-git_clone_path master https://github.com/coolsnowwolf/lede package/kernel/linux package/kernel/linux
+
 
 
 rm -rf target/linux/generic/hack-6.12/531-debloat_lzma.patch
