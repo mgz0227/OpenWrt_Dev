@@ -46,9 +46,9 @@ sed -i "s/192.168.1/192.168.3/" package/base-files/files/bin/config_generate
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
 
-git_clone_path master https://github.com/coolsnowwolf/lede mv target/linux/generic/hack-6.12
+#git_clone_path master https://github.com/coolsnowwolf/lede mv target/linux/generic/hack-6.12
 
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-6.6/
+#wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-6.6/
 
 sed -i "/mediaurlbase/d" package/feeds/*/luci-theme*/root/etc/uci-defaults/*
 sed -i 's/=bbr/=cubic/' package/kernel/linux/files/sysctl-tcp-bbr.conf
