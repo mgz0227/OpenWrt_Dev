@@ -19,7 +19,7 @@ wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kerne
 #rm -rf target/linux/generic/backport-6.6/780-24-v6.12-r8169-avoid-unsolicited-interrupts.patch
 #rm -rf target/linux/generic/backport-6.6/409-mtd-spi-nor-winbond-fix-w25q128-regression.patch
 
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/usb.mk -P package/kernel/linux/modules/
+#wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/usb.mk -P package/kernel/linux/modules/
 rm -rf target/linux/stm32/
 
 rm -rf target/linux/generic/hack-6.12/531-debloat_lzma.patch
