@@ -26,7 +26,7 @@ rm -rf target/linux/generic/hack-6.12/531-debloat_lzma.patch
 rm -rf target/linux/generic/hack-6.12/410-block-fit-partition-parser.patch
 
 #wget -N https://raw.githubusercontent.com/openwrt/openwrt/openwrt-24.10/package/kernel/mac80211/patches/build/236-fix-genlmsg_multicast_allns-build-error-on-kernel-6.6.59.patch -P package/kernel/mac80211/patches/build/
-#wget -N https://raw.githubusercontent.com/openwrt/packages/openwrt-24.10/multimedia/gst1-plugins-base/Makefile -P feeds/packages/multimedia/gst1-plugins-base
+wget -N https://raw.githubusercontent.com/openwrt/packages/openwrt-24.10/multimedia/gst1-plugins-base/Makefile -P feeds/packages/multimedia/gst1-plugins-base
 #wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
 
 #结束
