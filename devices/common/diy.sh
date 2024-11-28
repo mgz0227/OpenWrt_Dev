@@ -15,7 +15,7 @@ sed -i '/	refresh_config();/d' scripts/feeds
 
 rm -rf package/base-files
 mv -f feeds/miaogongzi/base-files package/
-mv -f feeds/packages/gst1-plugins-base
+rm -rf feeds/packages/multimedia/gst1-plugins-base
 
 echo "$(date +"%s")" >version.date
 sed -i '/$(curdir)\/compile:/c\$(curdir)/compile: package/opkg/host/compile' package/Makefile
