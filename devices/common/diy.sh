@@ -3,6 +3,8 @@
 shopt -s extglob
 
 sed -i '$a src-git miaogongzi https://github.com/mgz0227/OP-Packages.git;master' feeds.conf.default
+sed -i '$a src-git video https://github.com/openwrt/video.git' feeds.conf.default
+
 sed -i "/telephony/d" feeds.conf.default
 
 sed -i "s?targets/%S/packages?targets/%S/\$(LINUX_VERSION)?" include/feeds.mk
@@ -15,7 +17,7 @@ sed -i '/	refresh_config();/d' scripts/feeds
 
 rm -rf package/base-files
 mv -f feeds/miaogongzi/base-files package/
-rm -rf feeds/packages/multimedia/gst1-plugins-base
+
 
 echo "$(date +"%s")" >version.date
 sed -i '/$(curdir)\/compile:/c\$(curdir)/compile: package/opkg/host/compile' package/Makefile
