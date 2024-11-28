@@ -1,8 +1,11 @@
 #!/bin/bash
 #=================================================
 shopt -s extglob
+rm -rf feeds.conf.default
+wget -N https://raw.githubusercontent.com/openwrt/openwrt/openwrt-24.10/feeds.conf.default -P /
 
 sed -i '$a src-git miaogongzi https://github.com/mgz0227/OP-Packages.git;master' feeds.conf.default
+
 
 
 sed -i "/telephony/d" feeds.conf.default
