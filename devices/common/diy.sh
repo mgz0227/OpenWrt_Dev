@@ -6,8 +6,8 @@ shopt -s extglob
 
 sed -i '$a src-git miaogongzi https://github.com/mgz0227/OP-Packages.git;master' feeds.conf.default
 
-rm -rf package/devel/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/devel package/devel
+#rm -rf package/devel/*
+#git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/devel package/devel
 
 sed -i "/telephony/d" feeds.conf.default
 
