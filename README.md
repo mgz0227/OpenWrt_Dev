@@ -1,3 +1,8 @@
+[![Build OpenWrt](https://github.com/mgz0227/OpenWrt_Dev/actions/workflows/Openwrt-AutoBuild.yml/badge.svg)](https://github.com/mgz0227/OpenWrt_Dev/actions/workflows/Openwrt-AutoBuild.yml)
+
+
+
+
 ## 1. **固件**
 
 固件生成有3种方式：在线定制化生成、GitHub编译、本地化编译。
