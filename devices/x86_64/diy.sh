@@ -26,8 +26,10 @@ rm -rf target/linux/generic/hack-6.12/531-debloat_lzma.patch
 rm -rf target/linux/generic/hack-6.12/410-block-fit-partition-parser.patch
 #wget -N https://raw.githubusercontent.com/coolsnowwolf/packages/master/multimedia/gst1-plugins-base/Makefile -P feeds/packages/multimedia/gst1-plugins-base
 
-git_clone_path master https://github.com/coolsnowwolf/packages tmultimedia/gst1-plugins-base tmultimedia/gst1-plugins-base
 
+wget -N https://raw.githubusercontent.com/coolsnowwolf/packages/master/devel/delve/Makefile -P feeds/packages/devel/delve/
+wget -N https://raw.githubusercontent.com/coolsnowwolf/packages/multimedia/gst1-plugins-base/patches/010-distutils.patch -P feeds/packages/multimedia/gst1-plugins-base/patches/
+wget -N https://raw.githubusercontent.com/coolsnowwolf/packages/master/multimedia/gst1-plugins-base/Makefile -P feeds/packages/multimedia/gst1-plugins-base
 #wget -N https://raw.githubusercontent.com/openwrt/openwrt/openwrt-24.10/package/kernel/mac80211/patches/build/236-fix-genlmsg_multicast_allns-build-error-on-kernel-6.6.59.patch -P package/kernel/mac80211/patches/build/
 #wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/usb.mk -P package/kernel/linux/modules/
 #wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
