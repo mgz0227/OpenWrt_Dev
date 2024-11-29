@@ -138,7 +138,7 @@
 +      $(OPKG) install "$$ipk" && rm -f "$$ipk" || true; \
 +	done; \
 +	)
-+	$(OPKG) install --force-maintainer --force-reinstall my-default-settings
++	$(OPKG) install --force-maintainer --force-reinstall my-default-settings 2>/dev/null
  else
  	$(APK) add --arch $(ARCH_PACKAGES) --no-scripts $(BUILD_PACKAGES)
  endif
