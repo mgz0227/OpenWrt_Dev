@@ -1,0 +1,1 @@
+wget -N https://patch-diff.githubusercontent.com/raw/openwrt/openwrt/pull/16547.patch -P devices/common/patches/
