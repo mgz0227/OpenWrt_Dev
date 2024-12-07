@@ -16,12 +16,13 @@ sed -i '/	refresh_config();/d' scripts/feeds
 rm -rf package/base-files
 mv -f feeds/miaogongzi/base-files package/
 
+
 echo "$(date +"%s")" >version.date
 sed -i '/$(curdir)\/compile:/c\$(curdir)/compile: package/opkg/host/compile' package/Makefile
 sed -i "s/DEFAULT_PACKAGES:=/DEFAULT_PACKAGES:=luci-app-advancedplus luci-app-firewall luci-app-package-manager luci-app-upnp \
 luci-app-wizard luci-base luci-compat luci-lib-ipkg luci-lib-fs \
 luci-app-argon-config luci-app-ddns-go luci-app-openclash luci-app-adblock tcpdump-mini luci-app-nlbwmon \
-coremark wget-ssl curl autocore htop nano zram-swap kmod-lib-zstd kmod-tcp-bbr bash openssh-sftp-server block-mount resolveip ds-lite swconfig luci-app-fan luci-app-fileassistant /" include/target.mk
+coremark wget-ssl curl autocore htop nano zram-swap kmod-lib-zstd kmod-tcp-bbr bash openssh-sftp-server block-mount resolveip ds-lite swconfig luci-app-fan luci-app-filemanager /" include/target.mk
 
 sed -i "s/procd-ujail//" include/target.mk
 sed -i "s/procd-seccomp//" include/target.mk
@@ -47,8 +48,8 @@ sed -i "s/192.168.1/192.168.3/" package/base-files/files/bin/config_generate
 wget -N https://github.com/openwrt/openwrt/raw/refs/heads/main/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
 
 
-git_clone_path master https://github.com/coolsnowwolf/lede mv target/linux/generic/hack-6.12
-
+git_clone_path master https://github.com/coolsnowwolf/lede mv target/linux/generic/hack-6.6
+rm -rf target/linux/generic/hack-6.6/929-Revert-genetlink*
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch -P target/linux/generic/pending-6.6/
 wget -N https://patch-diff.githubusercontent.com/raw/openwrt/openwrt/pull/16414.patch -P devices/common/patches/
 
