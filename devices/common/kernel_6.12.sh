@@ -3,7 +3,7 @@ shopt -s extglob
 
 wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/include/kernel-6.12 -P include/
 
-rm -rf package/*
+
 #git_clone_path 6.12 https://github.com/namiltd/openwrt include include
 git_clone_path master https://github.com/coolsnowwolf/lede package package
 rm -rf package/lean
