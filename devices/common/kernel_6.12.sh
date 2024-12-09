@@ -1,1 +1,11 @@
-wget -N https://patch-diff.githubusercontent.com/raw/openwrt/openwrt/pull/16547.patch -P devices/common/patches/
+shopt -s extglob
+
+
+wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/include/kernel-6.12 -P include/
+
+
+#git_clone_path 6.12 https://github.com/namiltd/openwrt include include
+#git_clone_path 6.12 https://github.com/namiltd/openwrt package package
+git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/hack-6.12 target/linux/generic/hack-6.12
+
+git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/files-6.12 target/linux/generic/files

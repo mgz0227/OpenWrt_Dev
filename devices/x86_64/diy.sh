@@ -9,6 +9,7 @@ git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/file
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/64/config-6.12 -P target/linux/x86/64/
+wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/config-6.12 -P target/linux/x86/
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/firmware/linux-firmware/intel.mk -P package/firmware/linux-firmware/
 
