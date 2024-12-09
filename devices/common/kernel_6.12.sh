@@ -13,6 +13,9 @@ git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs/mbe
 rm -rf package/network/utils/linux-atm/*
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/linux-atm package/network/utils/linux-atm
 
+rm -rf package/network/services/dropbear/*
+git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/services/dropbear package/network/services/dropbear
+
 rm -rf package/lean
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/hack-6.12 target/linux/generic/hack-6.12
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/backport-6.12 target/linux/generic/backport-6.12
