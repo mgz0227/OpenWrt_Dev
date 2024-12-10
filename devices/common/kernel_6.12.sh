@@ -25,8 +25,7 @@ git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/
 rm -rf package/network/utils/xdp-tools/*
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/xdp-tools package/network/utils/xdp-tools
 
-rm -rf package/network/utils/xdp-tools/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/xdp-tools package/network/utils/xdp-tools
+rm -rf package/network/utils/xdp-tools
 
 
 rm -rf package/lean
