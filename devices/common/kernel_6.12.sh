@@ -3,7 +3,7 @@ shopt -s extglob
 
 wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/include/kernel-6.12 -P include/
 
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/target/linux/x86/Makefile -P target/linux/x86/Makefile
+wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/target/linux/x86/Makefile -P target/linux/x86/
 
 
 wget -N https://raw.githubusercontent.com/openwrt/openwrt/main/target/linux/generic/backport-6.6/192-v6.12-fix-libbpf-Wmaybe-uninitialized.patch target/linux/x86/patches-6.12
