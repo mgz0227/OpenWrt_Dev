@@ -16,6 +16,7 @@ sed -i '/	refresh_config();/d' scripts/feeds
 rm -rf package/base-files
 mv -f feeds/miaogongzi/base-files package/
 
+git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs package/libs
 
 echo "$(date +"%s")" >version.date
 sed -i '/$(curdir)\/compile:/c\$(curdir)/compile: package/opkg/host/compile' package/Makefile
