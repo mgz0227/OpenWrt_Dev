@@ -19,19 +19,19 @@ git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/
 rm -rf package/network/services/dropbear/*
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/services/dropbear package/network/services/dropbear
 
-rm -rf package/network/utils/tcpdump/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/tcpdump package/network/utils/tcpdump
+#rm -rf package/network/utils/tcpdump/*
+#git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/tcpdump package/network/utils/tcpdump
 
-rm -rf package/network/utils/iw/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/iw package/network/utils/iw
+#rm -rf package/network/utils/iw/*
+#git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/iw package/network/utils/iw
 
-rm -rf package/network/utils/xdp-tools
+#rm -rf package/network/utils/xdp-tools
 
 rm -rf package/network/utils/iptables
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/iptables package/network/utils/iptables
 
-rm -rf package/kernel/rtw88-usb/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/kernel/rtw88-usb package/kernel/rtw88-usb
+#rm -rf package/kernel/rtw88-usb/*
+#git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/kernel/rtw88-usb package/kernel/rtw88-usb
 
 #rm -rf package/network/utils/iproute2
 #rm -rf package/network/utils/iproute2/*
