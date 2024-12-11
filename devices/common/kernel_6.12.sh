@@ -1,9 +1,12 @@
 shopt -s extglob
 
 
-wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/include/kernel-6.12 -P include/
+#wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/include/kernel-6.12 -P include/
 
 wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/target/linux/x86/Makefile -P target/linux/x86/
+wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/include/kernel-6.12 -P include/
+wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/target/linux/x86/Makefile -P target/linux/x86
+
 
 
 wget -N https://raw.githubusercontent.com/openwrt/openwrt/main/target/linux/generic/backport-6.6/192-v6.12-fix-libbpf-Wmaybe-uninitialized.patch target/linux/x86/patches-6.12
@@ -50,6 +53,7 @@ git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs pac
 
 
 rm -rf package/lean
+git_clone_path 6.12 https://github.com/namiltd/openwrt package/kernel/linux/modules package/kernel/linux/modules
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/hack-6.12 target/linux/generic/hack-6.12
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/backport-6.12 target/linux/generic/backport-6.12
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/pending-6.12 target/linux/generic/pending-6.12
