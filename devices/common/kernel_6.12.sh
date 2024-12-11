@@ -13,6 +13,9 @@ wget -N https://raw.githubusercontent.com/openwrt/openwrt/main/target/linux/gene
 #git_clone_path 6.12 https://github.com/namiltd/openwrt include include
 git_clone_path master https://github.com/coolsnowwolf/lede package package
 
+rm -rf package/kernel/rtw88-usb
+
+
 rm -rf package/libs/mbedtls/*
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs/mbedtls package/libs/mbedtls
 
