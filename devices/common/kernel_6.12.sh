@@ -43,6 +43,9 @@ git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/
 
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs package/libs
 
+
+
+
 rm -rf package/lean
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/hack-6.12 target/linux/generic/hack-6.12
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/backport-6.12 target/linux/generic/backport-6.12
