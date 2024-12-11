@@ -17,42 +17,13 @@ rm -rf package/kernel/rtw88-usb
 
 
 
-rm -rf package/libs/mbedtls/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs/mbedtls package/libs/mbedtls
-
-rm -rf package/network/utils/linux-atm/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/linux-atm package/network/utils/linux-atm
-
-rm -rf package/network/services/dropbear/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/services/dropbear package/network/services/dropbear
-
-#rm -rf package/network/utils/tcpdump/*
-#git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/tcpdump package/network/utils/tcpdump
-
-#rm -rf package/network/utils/iw/*
-#git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/iw package/network/utils/iw
-
-#rm -rf package/network/utils/xdp-tools
-
-rm -rf package/network/utils/iptables
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/iptables package/network/utils/iptables
-
-#rm -rf package/kernel/rtw88-usb/*
-#git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/kernel/rtw88-usb package/kernel/rtw88-usb
-
-#rm -rf package/network/utils/iproute2
-#rm -rf package/network/utils/iproute2/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/utils/iproute2 package/network/utils/iproute2
-
-rm -rf package/base-files/files/etc/iproute2/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/base-files/files/etc/iproute2 package/base-files/files/etc/iproute2
-
-rm -rf package/network/services/hostapd/*
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/services/hostapd package/network/services/hostapd
-
-
-git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs package/libs
-
+wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/gpio-button-hotplug/src/gpio-button-hotplug.c -P package/kernel/gpio-button-hotplug/src
+wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-adsl-mei/src/drv_mei_cpe.c -P package/kernel/lantiq/ltq-adsl-mei/src
+wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-atm/src/ltq_atm.c -P package/kernel/lantiq/ltq-atm/src
+wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-deu/src/ifxmips_deu.c -P package/kernel/lantiq/ltq-deu/src
+wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-ptm/src/ifxmips_ptm_adsl.c -P package/kernel/lantiq/ltq-ptm/src
+wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-ptm/src/ifxmips_ptm_vdsl.c -P package/kernel/lantiq/ltq-ptm/src
+wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/ubootenv-nvram/src/ubootenv-nvram.c -P package/kernel/ubootenv-nvram/src
 
 
 
