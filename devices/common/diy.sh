@@ -17,6 +17,7 @@ rm -rf package/base-files
 mv -f feeds/miaogongzi/base-files package/
 
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs feeds/libs
+rm -rf feeds/base/network/utils/iproute2
 
 echo "$(date +"%s")" >version.date
 sed -i '/$(curdir)\/compile:/c\$(curdir)/compile: package/opkg/host/compile' package/Makefile
