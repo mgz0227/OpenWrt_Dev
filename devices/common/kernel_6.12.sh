@@ -16,6 +16,7 @@ git_clone_path master https://github.com/coolsnowwolf/lede package package
 rm -rf package/kernel/rtw88-usb
 
 
+
 rm -rf package/libs/mbedtls/*
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs/mbedtls package/libs/mbedtls
 
@@ -56,6 +57,7 @@ git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/libs pac
 
 
 rm -rf package/lean
+git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/files/drivers/net/phy target/linux/generic/files/drivers/net/phy
 git_clone_path 6.12 https://github.com/namiltd/openwrt package/kernel/linux/modules package/kernel/linux/modules
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/hack-6.12 target/linux/generic/hack-6.12
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/backport-6.12 target/linux/generic/backport-6.12
