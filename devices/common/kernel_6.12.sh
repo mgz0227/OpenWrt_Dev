@@ -37,6 +37,9 @@ git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/
 rm -rf package/base-files/files/etc/iproute2/*
 git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/base-files/files/etc/iproute2 package/base-files/files/etc/iproute2
 
+rm -rf package/network/services/hostapd/*
+git_clone_path openwrt-24.10 https://github.com/openwrt/openwrt package/network/services/hostapd package/network/services/hostapd
+
 rm -rf package/lean
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/hack-6.12 target/linux/generic/hack-6.12
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/backport-6.12 target/linux/generic/backport-6.12
