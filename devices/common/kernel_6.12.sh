@@ -1,38 +1,42 @@
+#!/bin/bash
+
 shopt -s extglob
 
+rm -rf target/linux package/kernel package/boot package/firmware
 
-#wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/include/kernel-6.12 -P include/
+mkdir new; cp -rf .git new/.git
+cd new
+git reset --hard origin/master
 
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/target/linux/x86/Makefile -P target/linux/x86/
-wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/include/kernel-6.12 -P include/
-wget -N https://raw.githubusercontent.com/mgz0227/Openwrt_6.12/main/target/linux/x86/Makefile -P target/linux/x86
+cp -rf --parents target/linux package/kernel package/boot package/firmware include/kernel* config/Config-images.in config/Config-kernel.in include/image*.mk include/trusted-firmware-a.mk include/bpf.mk scripts/ubinize-image.sh scripts/target-metadata.pl package/utils/bcm27xx-utils package/devel/perf package/network/config/qosify ../
+cd -
 
-
-
-wget -N https://raw.githubusercontent.com/openwrt/openwrt/main/target/linux/generic/backport-6.6/192-v6.12-fix-libbpf-Wmaybe-uninitialized.patch target/linux/x86/patches-6.12
-#git_clone_path 6.12 https://github.com/namiltd/openwrt include include
-git_clone_path master https://github.com/coolsnowwolf/lede package package
-
-rm -rf package/kernel/rtw88-usb
+sed -i "s/^.*vermagic$/\techo '1' > \$(LINUX_DIR)\/.vermagic/" include/kernel-defaults.mk
 
 
 
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/gpio-button-hotplug/src/gpio-button-hotplug.c -P package/kernel/gpio-button-hotplug/src
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-adsl-mei/src/drv_mei_cpe.c -P package/kernel/lantiq/ltq-adsl-mei/src
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-atm/src/ltq_atm.c -P package/kernel/lantiq/ltq-atm/src
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-deu/src/ifxmips_deu.c -P package/kernel/lantiq/ltq-deu/src
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-ptm/src/ifxmips_ptm_adsl.c -P package/kernel/lantiq/ltq-ptm/src
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/lantiq/ltq-ptm/src/ifxmips_ptm_vdsl.c -P package/kernel/lantiq/ltq-ptm/src
-wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/package/kernel/ubootenv-nvram/src/ubootenv-nvram.c -P package/kernel/ubootenv-nvram/src
+cp -rf devices/common/patches/rootfstargz.patch.main devices/common/patches/rootfstargz.patch
+cp -rf devices/common/patches/qca-ssdk.patch.main devices/common/patches/qca-ssdk.patch
+cp -rf devices/common/patches/ebpf.patch.main devices/common/patches/ebpf.patch
+cp -rf devices/common/patches/nonshared.patch.main devices/common/patches/nonshared.patch
+
+git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-6.12
 
 
 
-rm -rf package/lean
-git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/files target/linux/generic/files
-git_clone_path 6.12 https://github.com/namiltd/openwrt package/kernel/linux/modules package/kernel/linux/modules
-git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/hack-6.12 target/linux/generic/hack-6.12
-git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/backport-6.12 target/linux/generic/backport-6.12
-git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/generic/pending-6.12 target/linux/generic/pending-6.12
-git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux/x86/patches-6.12 target/linux/x86/patches-6.12
-git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/files-6.12 target/linux/generic/files
+wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
+
+
+wget -N https://raw.githubusercontent.com/openwrt/openwrt/main/include/u-boot.mk -P include/
+
+cd feeds/packages
+rm -rf kernel libs/xr_usb_serial_common net/xtables-addons
+
+git_clone_path master https://github.com/openwrt/packages kernel libs/xr_usb_serial_common net/xtables-addons
+cd ../../
+
+sed -i "s/OpenWrt/MeowWrt/g" package/base-files/files/bin/config_generate package/base-files/image-config.in config/Config-images.in Config.in include/u-boot.mk include/version.mk package/network/config/wifi-scripts/files/lib/wifi/mac80211.sh || true
+
+
+git_clone_path master https://github.com/coolsnowwolf/lede target/linux/generic/hack-6.12
 
