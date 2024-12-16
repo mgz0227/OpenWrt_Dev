@@ -19,34 +19,13 @@ git clone -b 6.12 --single-branch https://github.com/namiltd/openwrt.git || {
     exit 1
 }
 
-# 检查克隆是否成功
-if [ ! -d "openwrt" ]; then
-    echo "Error: Repository not cloned correctly."
-    exit 1
-fi
 
-# 返回到主目录
-cd ..
+cd openwrt
 
 # 将需要的文件和目录复制到当前工作目录
-cp -rf --parents \
-    target/linux \
-    package/kernel \
-    package/boot \
-    package/firmware \
-    include/kernel* \
-    config/Config-images.in \
-    config/Config-kernel.in \
-    include/image*.mk \
-    include/trusted-firmware-a.mk \
-    include/bpf.mk \
-    scripts/ubinize-image.sh \
-    scripts/target-metadata.pl \
-    package/utils/bcm27xx-utils \
-    package/devel/perf \
-    package/network/config/qosify \
-    "$TEMP_DIR/openwrt" .
+cp -rf --parents target/linux package/kernel package/boot package/firmware include/kernel* config/Config-images.in config/Config-kernel.in include/image*.mk include/trusted-firmware-a.mk include/bpf.mk scripts/ubinize-image.sh scripts/target-metadata.pl package/utils/bcm27xx-utils package/devel/perf package/network/config/qosify ../../
 
+cd ../../
 # 清理临时文件夹
 rm -rf "$TEMP_DIR"
 
