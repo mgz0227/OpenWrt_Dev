@@ -2,20 +2,33 @@
 
 shopt -s extglob
 
-# 删除旧文件夹
-rm -rf target/linux package/kernel package/boot package/firmware
+#!/bin/bash
 
-# 创建临时文件夹存放新代码
-mkdir new
-cd new
+# 删除旧文件夹（确保路径正确）
+rm -rf target/linux package/kernel package/boot package/firmware include scripts package/devel package/network config
 
-# 克隆指定分支的代码
-git clone -b 6.12 --single-branch https://github.com/namiltd/openwrt.git
+# 创建临时目录存放新代码
+TEMP_DIR="new"
+rm -rf "$TEMP_DIR"
+mkdir "$TEMP_DIR"
+cd "$TEMP_DIR"
 
-# 返回到上一层目录
+# 克隆指定分支代码
+git clone -b 6.12 --single-branch https://github.com/namiltd/openwrt.git || {
+    echo "Error: Failed to clone repository."
+    exit 1
+}
+
+# 检查克隆是否成功
+if [ ! -d "openwrt" ]; then
+    echo "Error: Repository not cloned correctly."
+    exit 1
+fi
+
+# 返回到主目录
 cd ..
 
-# 将所需文件和目录复制到当前目录（上一级目录）
+# 将需要的文件和目录复制到当前工作目录
 cp -rf --parents \
     target/linux \
     package/kernel \
@@ -32,10 +45,16 @@ cp -rf --parents \
     package/utils/bcm27xx-utils \
     package/devel/perf \
     package/network/config/qosify \
-    new/openwrt/* .
+    "$TEMP_DIR/openwrt" .
 
 # 清理临时文件夹
-rm -rf new
+rm -rf "$TEMP_DIR"
+
+# 检查关键文件是否存在
+if [ ! -f "target/linux/x86/image/64.mk" ] || [ ! -f "target/linux/x86/image/Makefile" ]; then
+    echo "Error: Required files are missing. Check the repository content."
+    exit 2
+fi
 
 sed -i "s/^.*vermagic$/\techo '1' > \$(LINUX_DIR)\/.vermagic/" include/kernel-defaults.mk
 
