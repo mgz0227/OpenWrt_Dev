@@ -10,6 +10,7 @@ rm -rf target/linux package/kernel package/boot package/firmware include scripts
 git_clone_path 6.12 https://github.com/namiltd/openwrt target/linux target/linux
 git_clone_path 6.12 https://github.com/namiltd/openwrt package/kernel package/kernel
 git_clone_path 6.12 https://github.com/namiltd/openwrt package/boot package/boot
+git_clone_path 6.12 https://github.com/namiltd/openwrt package/firmware
 git_clone_path 6.12 https://github.com/namiltd/openwrt package/network/config/qosify package/network/config/qosify
 
 wget -N https://raw.githubusercontent.com/namiltd/openwrt/6.12/include/kernel-6.12 -P include/
