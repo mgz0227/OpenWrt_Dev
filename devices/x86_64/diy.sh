@@ -2,20 +2,22 @@
 
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
-bash $SHELL_FOLDER/../common/kernel_6.12.sh
+#bash $SHELL_FOLDER/../common/kernel_6.6.sh
 
-git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.12
+git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/files target/linux/x86/patches-6.6
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
 
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/64/config-6.12 -P target/linux/x86/64/
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/config-6.12 -P target/linux/x86/
+wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/64/config-6.6 -P target/linux/x86/64/
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/firmware/linux-firmware/intel.mk -P package/firmware/linux-firmware/
 
 
 #内核升级模块
 #开始
+
+wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/target/linux/generic/hack-6.6/780-usb-net-MeigLink_modem_support.patch -P target/linux/generic/hack-6.6/
+wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
 
 #结束
 

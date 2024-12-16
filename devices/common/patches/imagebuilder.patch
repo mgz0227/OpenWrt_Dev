@@ -78,8 +78,8 @@
  	$(VERSION_SED_SCRIPT) $(PKG_BUILD_DIR)/repositories.conf
  
 -  endif
-+	$(SED) 's/^src\/gz \(.*\) https.*ai\/\(.*packages.*\)/src \1 file:\/\/www\/wwwroot\/dl.openwrt.ai\/\2/' $(PKG_BUILD_DIR)/repositories.conf
-+	$(SED) 's/^src\/gz \(.*\) https.*ai\/\(.*targets.*\)/src \1 file:\/\/www\/wwwroot\/dl.openwrt.ai\/\2/' $(PKG_BUILD_DIR)/repositories.conf
++	$(SED) 's/^src\/gz \(.*\) https.*ai\/\(.*packages.*\)/src \1 file:\/\/www\/wwwroot\/op.miaogongzi.cc\/\2/' $(PKG_BUILD_DIR)/repositories.conf
++	$(SED) 's/^src\/gz \(.*\) https.*ai\/\(.*targets.*\)/src \1 file:\/\/www\/wwwroot\/op.miaogongzi.cc\/\2/' $(PKG_BUILD_DIR)/repositories.conf
 +	$(SED) '/openwrt_core/d' $(PKG_BUILD_DIR)/repositories.conf
  
  	# create an empty package index so `opkg` doesn't report an error
@@ -87,7 +87,7 @@
 
 --- a/target/imagebuilder/files/Makefile
 +++ b/target/imagebuilder/files/Makefile
-@@ -143,6 +143,26 @@
+@@ -142,6 +142,26 @@ BUILD_PACKAGES:=$(sort $(DEFAULT_PACKAGES) $($(USER_PROFILE)_PACKAGES) kernel)
  # "-pkgname" in the package list means remove "pkgname" from the package list
  BUILD_PACKAGES:=$(filter-out $(filter -%,$(BUILD_PACKAGES)) $(patsubst -%,%,$(filter -%,$(BUILD_PACKAGES))),$(BUILD_PACKAGES))
  BUILD_PACKAGES:=$(USER_PACKAGES) $(BUILD_PACKAGES)
@@ -114,7 +114,7 @@
  BUILD_PACKAGES:=$(filter-out $(filter -%,$(BUILD_PACKAGES)) $(patsubst -%,%,$(filter -%,$(BUILD_PACKAGES))),$(BUILD_PACKAGES))
  PACKAGES:=
  
-@@ -158,6 +178,8 @@
+@@ -157,6 +177,8 @@ _call_image: staging_dir/host/.prereq-build
  	$(MAKE) -s build_image
  	$(MAKE) -s json_overview_image_info
  	$(MAKE) -s checksum
@@ -123,13 +123,13 @@
  
  _call_manifest: FORCE
  	rm -rf $(TARGET_DIR)
-@@ -223,9 +245,17 @@
+@@ -224,9 +246,17 @@ package_install: FORCE
  	@echo
  	@echo Installing packages...
  ifeq ($(CONFIG_USE_APK),)
-+    $(eval $(call add_zh_cn_packages))
- 	$(OPKG) install $(wildcard $(PACKAGE_DIR)/libc_*.ipk)
- 	$(OPKG) install $(wildcard $(PACKAGE_DIR)/kernel_*.ipk)
++	$(eval $(call add_zh_cn_packages))
+ 	$(OPKG) install $(firstword $(wildcard $(LINUX_DIR)/libc_*.ipk $(PACKAGE_DIR)/libc_*.ipk))
+ 	$(OPKG) install $(firstword $(wildcard $(LINUX_DIR)/kernel_*.ipk $(PACKAGE_DIR)/kernel_*.ipk))
 -	$(OPKG) install $(BUILD_PACKAGES)
 +	$(OPKG) install --force-maintainer $(BUILD_PACKAGES) luci-i18n-base-zh-cn || true
 +	$(if $(USER_FILES), \
@@ -140,9 +140,9 @@
 +	)
 +	$(OPKG) install --force-maintainer --force-reinstall my-default-settings 2>/dev/null
  else
- 	$(APK) add --arch $(ARCH_PACKAGES) --no-scripts $(BUILD_PACKAGES)
- endif
-@@ -234,7 +264,7 @@
+ 	$(APK) add --no-scripts $(firstword $(wildcard $(LINUX_DIR)/libc-*.apk $(PACKAGE_DIR)/libc-*.apk))
+ 	$(APK) add --no-scripts $(firstword $(wildcard $(LINUX_DIR)/kernel-*.apk $(PACKAGE_DIR)/kernel-*.apk))
+@@ -237,7 +267,7 @@ prepare_rootfs: FORCE
  	@echo
  	@echo Finalizing root filesystem...
  
@@ -151,7 +151,7 @@
  ifeq ($(CONFIG_USE_APK),)
  	$(if $(CONFIG_SIGNATURE_CHECK), \
  		$(if $(ADD_LOCAL_KEY), \
-@@ -251,16 +281,19 @@
+@@ -254,16 +284,19 @@ else
  	)
  endif
  	$(call prepare_rootfs,$(TARGET_DIR),$(USER_FILES),$(DISABLED_SERVICES))
