@@ -97,15 +97,14 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install build-essential clang llvm flex g++ gawk gcc-multilib gettext \
-        git libncurses5-dev libssl-dev python2.7 python3-distutils python3-pyelftools python3-setuptools \
-        python3-dev python3-pip rsync unzip zlib1g-dev swig aria2 jq subversion qemu-utils ccache rename \
-        libelf-dev device-tree-compiler libgnutls28-dev coccinelle libgmp3-dev libmpc-dev libfuse-dev
-        pip3 install --user -U pylibfdt
+        sudo -E apt-get -qq install build-essential clang flex bison g++ gawk \
+        gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev \
+        python3-setuptools rsync swig unzip zlib1g-dev file wget \
+        llvm python3-pyelftools libpython3-dev aria2 jq qemu-utils ccache rename \
+        libelf-dev device-tree-compiler libgmp3-dev libmpc-dev libfuse-dev
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
-        sudo ln -sf /usr/bin/python2.7 /usr/bin/python2
         sudo timedatectl set-timezone "$TZ"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
@@ -132,7 +131,7 @@ jobs:
         fi
         #echo "CONFIG_VERSION_REPO=\"https://op.miaogongzi.cc/`echo $REPO_BRANCH  | cut -d . -f 1,2 | sed -e 's/^v//'`\"">>devices/common/.config
         echo "CONFIG_VERSION_REPO=\"https://op.miaogongzi.cc/24.10\"">>devices/common/.config
-        if [[ ! "${{ env.REPO_BRANCH }}" && "$REPO_URL" == "https://github.com/openwrt/openwrt" ]]; then
+        if [[ ! "${{ env.REPO_BRANCH }}" && "$REPO_URL" == "https://github.com/namiltd/openwrt" ]]; then
             git clone $REPO_URL -b $REPO_BRANCH openwrt
         elif [[ ! "${{ env.REPO_BRANCH }}" ]]; then
             git clone $REPO_URL openwrt
@@ -294,10 +293,7 @@ jobs:
                 
                 Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
                 echo "EMOJI=${Emoji[$[$RANDOM % ${#Emoji[@]}]]}" >> $GITHUB_ENV
-                if [ ${{matrix.target}} == "x86_64" ]; then
-                  echo "DOCKERTAG=${{ secrets.DOCKER_ID }}/openwrt-nginx:latest" >> $GITHUB_ENV
-                  echo "NOTICE=请分配不少于2G的存储容量" >> $GITHUB_ENV
-                fi
+
                 
     - name: Organize Release files
       id: organizeRelease
@@ -312,19 +308,6 @@ jobs:
                 echo "DOCKERTAG=${{ secrets.DOCKER_ID }}/openwrt-nginx:latest" >> $GITHUB_ENV
                 fi
 
-    - name: Deploy imagebuilder to server
-      uses: easingthemes/ssh-deploy@main
-      continue-on-error: true
-      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
-      with:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        ARGS: "-avzr"
-        SOURCE: openwrt/bin/targets
-        REMOTE_HOST: ${{ secrets.SERVER_HOST }}
-        REMOTE_PORT: ${{ secrets.SERVER_PORT }}
-        REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
-        TARGET: "/www/wwwroot/op.miaogongzi.cc/24.10"
-
     - name: Deploy imagebuilder to Ubuntuserver
       uses: easingthemes/ssh-deploy@main
       continue-on-error: true
@@ -335,6 +318,20 @@ jobs:
         SOURCE: openwrt/bin/targets
         REMOTE_HOST: ${{ secrets.HOST }}
         REMOTE_PORT: ${{ secrets.PORT }}
+        REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
+        TARGET: "/www/wwwroot/op.miaogongzi.cc/24.10"
+                        
+
+    - name: Deploy imagebuilder to server
+      uses: easingthemes/ssh-deploy@main
+      continue-on-error: true
+      if: env.SSH_PRIVATE_KEY && ! contains(github.event.action, 'noser')
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ARGS: "-avzr"
+        SOURCE: openwrt/bin/targets
+        REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+        REMOTE_PORT: ${{ secrets.SERVER_PORT }}
         REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
         TARGET: "/www/wwwroot/op.miaogongzi.cc/24.10"
 
