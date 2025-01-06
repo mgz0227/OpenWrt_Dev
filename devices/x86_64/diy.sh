@@ -20,6 +20,7 @@ wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/firmw
 #wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
 
 rm -rf target/linux/generic/hack-6.12/410-block-fit-partition-parser.patch
+rm -rf target/linux/generic/hack-6.12/531-debloat_lzma.patch
 #结束
 
 sed -i 's/kmod-r8169/kmod-r8168/' target/linux/x86/image/64.mk
