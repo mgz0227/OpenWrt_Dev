@@ -133,25 +133,7 @@
  
  _call_manifest: FORCE
  	rm -rf $(TARGET_DIR)
-@@ -224,9 +256,17 @@ package_install: FORCE
- 	@echo
- 	@echo Installing packages...
- ifeq ($(CONFIG_USE_APK),)
-+	$(eval $(call add_zh_cn_packages))
- 	$(OPKG) install $(firstword $(wildcard $(LINUX_DIR)/libc_*.ipk $(PACKAGE_DIR)/libc_*.ipk))
- 	$(OPKG) install $(firstword $(wildcard $(LINUX_DIR)/kernel_*.ipk $(PACKAGE_DIR)/kernel_*.ipk))
--	$(OPKG) install $(BUILD_PACKAGES)
-+	$(OPKG) install --force-maintainer $(BUILD_PACKAGES) luci-i18n-base-zh-cn || true
-+	$(if $(USER_FILES), \
-+	find $(USER_FILES) -name "*.ipk" -print0 | \
-+	while IFS= read -r -d '' ipk; do \
-+		$(OPKG) install "$$ipk" && rm -f "$$ipk" || true; \
-+	done; \
-+	)
-+	$(OPKG) install --force-maintainer --force-reinstall my-default-settings 2>/dev/null
- else
- 	$(APK) add --no-scripts $(firstword $(wildcard $(LINUX_DIR)/libc-*.apk $(PACKAGE_DIR)/libc-*.apk))
- 	$(APK) add --no-scripts $(firstword $(wildcard $(LINUX_DIR)/kernel-*.apk $(PACKAGE_DIR)/kernel-*.apk))
+
 @@ -237,7 +277,7 @@ prepare_rootfs: FORCE
  	@echo
  	@echo Finalizing root filesystem...
