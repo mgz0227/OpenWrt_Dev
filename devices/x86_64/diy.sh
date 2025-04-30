@@ -8,24 +8,29 @@ git_clone_path master https://github.com/coolsnowwolf/lede target/linux/x86/file
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
 
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/64/config-6.6 -P target/linux/x86/64/
-
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/package/firmware/linux-firmware/intel.mk -P package/firmware/linux-firmware/
-
 
 #内核升级模块
 #开始
 
-#wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/target/linux/generic/hack-6.6/780-usb-net-MeigLink_modem_support.patch -P target/linux/generic/hack-6.6/
-#wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/include/kernel-6.6 -P include/
+#rm -rf target/linux/generic/hack-6.6/767-net-phy-realtek-add-led-link-select-for-RTL8221.patch
+rm -rf target/linux/generic/pending-6.6/155-usbnet-restore-usb%d-name-exception-for-local-mac-addresses.patch
+rm -rf target/linux/generic/hack-6.6/781-usb-net-rndis-support-asr.patch
+rm -rf target/linux/generic/pending-6.6/620-net_sched-codel-do-not-defer-queue-length-update.patch
+rm -rf target/linux/generic/pending-6.6/734-net-ethernet-mediatek-enlarge-DMA-reserve-buffer.patch
+rm -rf target/linux/generic/hack-6.6/610-net-page_pool-try-to-free-deferred-skbs-while-waitin.patch
 
-rm -rf target/linux/generic/hack-6.12/410-block-fit-partition-parser.patch
-rm -rf target/linux/generic/hack-6.12/531-debloat_lzma.patch
+
+wget -N https://raw.githubusercontent.com/openwrt/openwrt/03cbc353d7e2f02a9ffa8f39dad67c8c2469426a/target/linux/generic/hack-6.6/610-net-page_pool-try-to-free-deferred-skbs-while-waitin.patch -P include/
+wget -N https://raw.githubusercontent.com/openwrt/openwrt/03cbc353d7e2f02a9ffa8f39dad67c8c2469426a/target/linux/generic/pending-6.6/620-net_sched-codel-do-not-defer-queue-length-update.patch -P include/
+wget -N https://raw.githubusercontent.com/openwrt/openwrt/03cbc353d7e2f02a9ffa8f39dad67c8c2469426a/target/linux/generic/pending-6.6/734-net-ethernet-mediatek-enlarge-DMA-reserve-buffer.patch -P include/
+wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/target/linux/generic/kernel-6.6 -P include/
+
+
 #结束
 
 sed -i 's/kmod-r8169/kmod-r8168/' target/linux/x86/image/64.mk
 
-sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += kmod-usb-hid kmod-mmc kmod-sdhci usbutils pciutils lm-sensors-detect kmod-atlantic kmod-vmxnet3 kmod-igbvf kmod-iavf kmod-bnx2x kmod-pcnet32 kmod-tulip kmod-r8101 kmod-r8125 kmod-r8126 kmod-8139cp kmod-8139too kmod-i40e kmod-drm-i915 kmod-drm-amdgpu kmod-mlx4-core kmod-mlx5-core fdisk lsblk kmod-phy-broadcom kmod-ixgbevf/' target/linux/x86/Makefile
+sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += kmod-fs-f2fs kmod-mmc kmod-sdhci kmod-usb-hid amd64-microcode intel-microcode usbutils pciutils lm-sensors-detect kmod-atlantic kmod-vmxnet3 kmod-igbvf kmod-iavf kmod-bnx2x kmod-pcnet32 kmod-tulip kmod-r8101 kmod-r8125 kmod-r8126 kmod-8139cp kmod-8139too kmod-i40e kmod-drm-amdgpu kmod-mlx4-core kmod-mlx5-core fdisk lsblk kmod-phy-broadcom kmod-ixgbevf/' target/linux/x86/Makefile
 
 mv -f tmp/r81* feeds/miaogongzi/
 
