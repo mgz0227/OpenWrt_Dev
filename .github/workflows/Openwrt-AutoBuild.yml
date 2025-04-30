@@ -258,7 +258,7 @@ jobs:
 
 
     - name: Compile the firmware
-       id: compile
+      id: compile
        run: |
          shopt -s extglob
          cd openwrt
@@ -270,7 +270,6 @@ jobs:
          rm -rf staging_dir/toolchain-*/bin/*openwrt-linux-musl-lto-dump
          rm -rf staging_dir/toolchain-*/initial
          df -hT
-
     - name: Organize files
       id: organize
       continue-on-error: true
