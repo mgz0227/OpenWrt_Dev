@@ -259,7 +259,7 @@ jobs:
 
     - name: Compile the firmware
       id: compile
-       run: |
+      run: |
          shopt -s extglob
          cd openwrt
          echo -e "$(($(nproc)+1)) thread compile"
