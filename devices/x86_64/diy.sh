@@ -26,6 +26,9 @@ wget -N https://raw.githubusercontent.com/openwrt/openwrt/03cbc353d7e2f02a9ffa8f
 wget -N https://raw.githubusercontent.com/mgz0227/openwrt/main/target/linux/generic/kernel-6.6 -P include/
 wget -N https://raw.githubusercontent.com/openwrt/openwrt/refs/heads/main/target/linux/generic/kernel-6.12 -P include/
 
+
+wget -N https://raw.githubusercontent.com/openwrt/openwrt/refs/heads/openwrt-24.10/include/kernel-version.mk -P include/
+
 #结束
 
 sed -i 's/kmod-r8169/kmod-r8168/' target/linux/x86/image/64.mk
