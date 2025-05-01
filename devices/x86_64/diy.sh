@@ -19,7 +19,7 @@ rm -rf target/linux/generic/pending-6.6/620-net_sched-codel-do-not-defer-queue-l
 rm -rf target/linux/generic/pending-6.6/734-net-ethernet-mediatek-enlarge-DMA-reserve-buffer.patch
 rm -rf target/linux/generic/hack-6.6/610-net-page_pool-try-to-free-deferred-skbs-while-waitin.patch
 
-
+wget -N https://github.com/openwrt/openwrt/blob/113d0268b4856d640cb380a71792b8fdc3b87802/config/Config-kernel.in -P /config
 wget -N https://raw.githubusercontent.com/openwrt/openwrt/03cbc353d7e2f02a9ffa8f39dad67c8c2469426a/target/linux/generic/hack-6.6/610-net-page_pool-try-to-free-deferred-skbs-while-waitin.patch -P include/
 wget -N https://raw.githubusercontent.com/openwrt/openwrt/03cbc353d7e2f02a9ffa8f39dad67c8c2469426a/target/linux/generic/pending-6.6/620-net_sched-codel-do-not-defer-queue-length-update.patch -P include/
 wget -N https://raw.githubusercontent.com/openwrt/openwrt/03cbc353d7e2f02a9ffa8f39dad67c8c2469426a/target/linux/generic/pending-6.6/734-net-ethernet-mediatek-enlarge-DMA-reserve-buffer.patch -P include/
