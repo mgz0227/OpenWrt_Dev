@@ -18,7 +18,7 @@ rm -rf packages/xtables-addons
 rm -rf package/feeds/packages/xtables-addons
 rm -rf feeds/packages/xtables-addons
 rm -rf feeds/packages/net/xtables-addons
-
+rm -rf package/feeds/packages/net/xtables-addons
 
 
 
