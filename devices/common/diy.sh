@@ -15,6 +15,9 @@ rm -rf package/devel/perf
 #rm -rf package/network/config/firewall4
 rm -rf packages/net/xtables-addons
 rm -rf packages/xtables-addons
+rm -rf package/feeds/packages/xtables-addons
+rm -rf feeds/packages/xtables-addons
+rm -rf feeds/packages/net/xtables-addons
 
 
 
