@@ -12,7 +12,7 @@ sed -i '/	refresh_config();/d' scripts/feeds
 
 rm -rf package/devel/kselftests-bpf
 rm -rf package/devel/perf
-rm -rf package/network/config/
+rm -rf package/network/config/firewall4
 rm -rf packages/kernel/ovpn-dco
 
 
