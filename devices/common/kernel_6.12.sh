@@ -13,5 +13,3 @@ cd -
 cd openwrt
 rm -rf ./feeds/packages/net/xtables-addons
 cd -
-#find . -type d -name xtables-addons
-#sudo find / -type d -name xtables-addons 2>/dev/null
