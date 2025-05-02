@@ -10,6 +10,3 @@ git reset --hard origin/master
 
 cp -rf --parents target/linux package/kernel package/boot package/firmware include/kernel* config/Config-images.in config/Config-kernel.in include/image*.mk include/trusted-firmware-a.mk scripts/ubinize-image.sh package/utils/bcm27xx-utils package/network/config/qosify ../
 cd -
-cd openwrt
-rm -rf ./feeds/packages/net/xtables-addons
-cd -
