@@ -22,7 +22,7 @@ rm -rf package/feeds/packages/net/xtables-addons
 rm -rf package/xtables-addons
 rm -rf package/net/xtables-addons
 rm -rf ./feeds/packages/net/xtables-addons
-rm -rf package/kernel/mt*
+rm -rf package/kernel/mt76
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a -p miaogongzi -f
