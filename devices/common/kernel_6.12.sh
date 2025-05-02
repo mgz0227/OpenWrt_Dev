@@ -2,24 +2,23 @@
 
 shopt -s extglob
 
-rm -rf target/linux package/kernel package/boot package/firmware
+rm -rf target/linux package/kernel/linux/modules 
 
 mkdir new; cp -rf .git new/.git
 cd new
 git reset --hard origin/master
 
-cp -rf --parents target/linux package/kernel package/boot package/firmware include/kernel* config/Config-images.in config/Config-kernel.in include/image*.mk include/trusted-firmware-a.mk scripts/ubinize-image.sh package/utils/bcm27xx-utils package/network/config/qosify ../
+cp -rf --parents target/linux package/kernel/linux/modules config/Config-kernel.in ../
 cd -
 
-cd feeds/packages
-
-rm -rf net/xtables-addons 
-
+#cd feeds/packages
+#rm -rf net/xtables-addons 
 
 
-cd ../../
 
-cd feeds/pakage
-rm -rf kernel/mt76 devel/kselftests-bpf devel/perf
+#cd ../../
 
-cd ../../
+#cd feeds/pakage
+#rm -rf kernel/mt76 devel/kselftests-bpf devel/perf
+
+#cd ../../
