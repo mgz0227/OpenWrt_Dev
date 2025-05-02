@@ -227,6 +227,7 @@ jobs:
 
         rm -rf ./new/package/kernel/mt76
         rm -rf ./package/kernel/mt76
+        rm -rf ./package/kernel/mt7621-qtn-rgmii
         find . -type d -name mt76 
 
         make defconfig
