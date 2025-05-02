@@ -15,4 +15,11 @@ cd feeds/packages
 
 rm -rf net/xtables-addons 
 
+
+
+cd ../../
+
+cd feeds/pakage
+rm -rf kernel/mt76 devel/kselftests-bpf devel/perf
+
 cd ../../
