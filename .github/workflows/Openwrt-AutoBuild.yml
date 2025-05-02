@@ -224,10 +224,8 @@ jobs:
         make defconfig
         if [[ ! "${{matrix.target}}" =~ (amlogic_*|armsr_armv8|bcm27xx_*|rockchip_armv8|sunxi_*|x86_*) ]]; then
         sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >>.config
-        # 先删除原有所有 kmod-mt 相关配置
-        sed -i '/^CONFIG_PACKAGE_kmod-mt[0-9a-zA-Z_+-]*/d' .config
-        grep -rI --no-filename 'config PACKAGE_kmod-mt' package/kernel/mt76/ | \awk '{print "CONFIG_"$2"=n"}' >> .config
         sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
+        sed -i "s/\(kmod-mt.*\)=m/\1=n/" .config
         
         if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then 
             sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >>.config
