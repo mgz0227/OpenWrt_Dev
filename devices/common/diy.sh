@@ -22,7 +22,7 @@ rm -rf package/feeds/packages/net/xtables-addons
 rm -rf package/xtables-addons
 rm -rf package/net/xtables-addons
 rm -rf ./feeds/packages/net/xtables-addons
-rm -rf package/kernel/mt76
+rm -rf ./package/kernel/mt76
 rm -rf ./new/package/kernel/mt76
 
 
