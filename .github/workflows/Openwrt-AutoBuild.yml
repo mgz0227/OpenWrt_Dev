@@ -184,6 +184,8 @@ jobs:
         cp -rf devices/${{matrix.target}}/. openwrt/
         cp -rf devices openwrt/
         cd openwrt
+        find . -type d -name xtables-addons
+        find / -type d -name xtables-addons 2>/dev/null
         chmod +x devices/common/$DIY_SH
         /bin/bash "devices/common/$DIY_SH"
         cp -f devices/common/$CONFIG_FILE .config
@@ -197,6 +199,8 @@ jobs:
           /bin/bash "devices/${{matrix.target}}/$DIY_SH"
         fi
         cp -Rf ./diy/* ./ || true
+        find . -type d -name xtables-addons
+        find / -type d -name xtables-addons 2>/dev/null
 
     - name: Apply patches
       run: |
