@@ -2,13 +2,12 @@
 
 shopt -s extglob
 
-rm -rf target/linux package/kernel/linux/modules 
-
+rm -rf target/linux package/kernel
 mkdir new; cp -rf .git new/.git
 cd new
 git reset --hard origin/master
 
-cp -rf --parents target/linux package/kernel/linux/modules config/Config-kernel.in ../
+cp -rf --parents target/linux package/kernel config/Config-kernel.in ../
 cd -
 
 #cd feeds/packages
