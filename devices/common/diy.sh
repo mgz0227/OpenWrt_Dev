@@ -12,18 +12,7 @@ sed -i '/	refresh_config();/d' scripts/feeds
 
 rm -rf package/devel/kselftests-bpf
 rm -rf package/devel/perf
-#rm -rf package/network/config/firewall4
-rm -rf packages/net/xtables-addons
-rm -rf packages/xtables-addons
-rm -rf package/feeds/packages/xtables-addons
-rm -rf feeds/packages/xtables-addons
-rm -rf feeds/packages/net/xtables-addons
-rm -rf package/feeds/packages/net/xtables-addons
-rm -rf package/xtables-addons
-rm -rf package/net/xtables-addons
-rm -rf ./feeds/packages/net/xtables-addons
-rm -rf ./package/kernel/mt76
-rm -rf ./new/package/kernel/mt76
+
 
 
 
