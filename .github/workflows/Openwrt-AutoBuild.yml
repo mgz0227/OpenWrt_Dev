@@ -262,6 +262,9 @@ jobs:
       id: compile
       run: |
         shopt -s extglob
+        cd openwrt
+        rm -rf ./feeds/packages/net/xtables-addons
+        find . -type d -name xtables-addons 2>/dev/null
         find . -type d -name xtables-addons
         echo -e "$(($(nproc)+1)) thread compile"
         make -j$(($(nproc)+1)) || make V=sc &>build.log || (tail -50 build.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
