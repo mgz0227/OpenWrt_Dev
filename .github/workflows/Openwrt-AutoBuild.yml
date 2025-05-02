@@ -268,8 +268,7 @@ jobs:
         rm -rf ./feeds/packages/net/xtables-addons
         find . -type d -name xtables-addons 2>/dev/null
         find . -type d -name xtables-addons
-        rm -rf package/kernel/mt76
-        find . -type d -name mt76 
+
         rm -rf ./new/package/kernel/mt76
         find . -type d -name mt76 
         echo -e "$(($(nproc)+1)) thread compile"
