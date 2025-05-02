@@ -12,3 +12,4 @@ cp -rf --parents target/linux package/kernel package/boot package/firmware inclu
 cd -
 
 find . -type d -name xtables-addons
+sudo find / -type d -name xtables-addons 2>/dev/null
