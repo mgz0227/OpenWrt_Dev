@@ -225,8 +225,7 @@ jobs:
         if [[ ! "${{matrix.target}}" =~ (amlogic_*|armsr_armv8|bcm27xx_*|rockchip_armv8|sunxi_*|x86_*) ]]; then
         sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >>.config
         sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
-        sed -i -E 's/^(CONFIG_PACKAGE_kmod-mt[0-9a-zA-Z_-]*)=(m|y)$/\1=n/' .config
-        grep 'CONFIG_PACKAGE_kmod-mt' .config
+        sed -i '/^CONFIG_PACKAGE_kmod-mt[0-9a-zA-Z_-]*/s/=.*/=n/' .config
         if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then 
             sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >>.config
         fi
