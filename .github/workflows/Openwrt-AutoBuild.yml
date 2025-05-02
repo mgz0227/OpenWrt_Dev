@@ -266,6 +266,7 @@ jobs:
       run: |
         shopt -s extglob
         cd openwrt
+        rm -rf ./feeds/packages/net/xtables-addons
         find . -type d -name xtables-addons 2>/dev/null
         find . -type d -name xtables-addons
         echo -e "$(($(nproc)+1)) thread compile"
