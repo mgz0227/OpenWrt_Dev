@@ -10,7 +10,8 @@ git reset --hard origin/master
 cp -rf --parents target/linux package/kernel config/Config-kernel.in ../
 cd -
 
-#cd feeds/packages
+cd feeds/packages
+rm -rf kernel/ovpn-dco
 #rm -rf net/xtables-addons 
 
 
