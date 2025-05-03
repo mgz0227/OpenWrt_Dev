@@ -2,8 +2,7 @@
 
 shopt -s extglob
 
-rm -rf target/linux package/kernel package/network/services
-/dnsmasq
+rm -rf target/linux package/kernel
 mkdir new; cp -rf .git new/.git
 cd new
 git reset --hard origin/master
