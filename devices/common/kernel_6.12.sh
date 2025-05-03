@@ -11,14 +11,14 @@ cp -rf --parents target/linux package/kernel config/Config-kernel.in ../
 cd -
 
 cd feeds/packages
-rm -rf kernel/ovpn-dco libs/xr_usb_serial_common
+rm -rf kernel/ovpn-dco libs/xr_usb_serial_common net/xtables-addons
 #rm -rf net/xtables-addons 
 
 
 
-#cd ../../
+cd ../../
 
-#cd feeds/pakage
-#rm -rf kernel/mt76 devel/kselftests-bpf devel/perf
+cd feeds/pakage
+rm -rf kernel/mt76 kernel/mt7621-qtn-rgmii devel/kselftests-bpf devel/perf
 
-#cd ../../
+cd ../../
