@@ -12,13 +12,10 @@ cd -
 
 cd feeds/packages
 rm -rf kernel/ovpn-dco libs/xr_usb_serial_common net/xtables-addons
-#rm -rf net/xtables-addons 
-
-
 
 cd ../../
 
 cd feeds/pakage
-rm -rf kernel/mt76 kernel/mt7621-qtn-rgmii devel/kselftests-bpf devel/perf
+rm -rf devel/kselftests-bpf devel/perf
 
 cd ../../
