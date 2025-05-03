@@ -11,7 +11,7 @@ cp -rf --parents target/linux package/kernel config/Config-kernel.in ../
 cd -
 
 cd feeds/packages
-rm -rf kernel/ovpn-dco
+rm -rf kernel/ovpn-dco libs/xr_usb_serial_common
 #rm -rf net/xtables-addons 
 
 
