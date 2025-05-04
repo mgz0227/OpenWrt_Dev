@@ -15,7 +15,7 @@ rm -rf kernel/ovpn-dco libs/xr_usb_serial_common net/xtables-addons
 
 cd ../../
 
-cd feeds/pakage
+cd feeds/package
 rm -rf devel/kselftests-bpf devel/perf
 
 cd ../../
