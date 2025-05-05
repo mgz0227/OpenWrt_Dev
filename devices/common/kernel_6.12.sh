@@ -16,6 +16,6 @@ rm -rf kernel/ovpn-dco libs/xr_usb_serial_common net/xtables-addons
 cd ../../
 
 cd package
-rm -rf devel/kselftests-bpf devel/perf
+rm -rf devel/kselftests-bpf devel/perf kernel/mt76 kernel/mt7621-qtn-rgmii
 
 cd ../
