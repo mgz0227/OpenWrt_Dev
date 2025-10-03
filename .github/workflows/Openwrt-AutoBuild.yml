@@ -123,13 +123,13 @@ jobs:
            -H "Authorization: Bearer ${{ secrets.TOKEN_MGZ0227 }}" \
            -X POST -d '{ "query": "query {repository(owner: \"openwrt\", name: \"openwrt\") {refs(refPrefix: \"refs/tags/\", first: 4, orderBy: {field: TAG_COMMIT_DATE, direction: DESC}) {nodes {name target { ... on Tag {tagger {date}}}}}}}"}' https://api.github.com/graphql)"
         TAG_DATE="$( echo ${TAG_INFO} | jq -r '.data.repository.refs.nodes[] | select(.name | startswith("v24")) | .target.tagger.date' | head -n 1)"
-        if [[ $(( ($(date +%s) - $(date -d "$TAG_DATE" +%s)) / 86400 )) -lt 30 ]]; then
+        if [[ $(( ($(date +%s) - $(date -d "$TAG_DATE" +%s)) / 86400 )) -lt 20 ]]; then
         REPO_BRANCH="$( echo ${TAG_INFO} | jq -r '.data.repository.refs.nodes[].name' | grep v24 | head -n 1)"
         else
         REPO_BRANCH="openwrt-24.10"
         fi
         #echo "CONFIG_VERSION_REPO=\"https://op.miaogongzi.cc/`echo $REPO_BRANCH  | cut -d . -f 1,2 | sed -e 's/^v//'`\"">>devices/common/.config
-        echo "CONFIG_VERSION_REPO=\"https://op.miaogongzi.cc/24.10\"">>devices/common/.config
+        #echo "CONFIG_VERSION_REPO=\"https://op.miaogongzi.cc/24.10\"">>devices/common/.config
         if [[ ! "${{ env.REPO_BRANCH }}" && "$REPO_URL" == "https://github.com/openwrt/openwrt" ]]; then
             git clone $REPO_URL -b $REPO_BRANCH openwrt
         elif [[ ! "${{ env.REPO_BRANCH }}" ]]; then
@@ -197,7 +197,6 @@ jobs:
           /bin/bash "devices/${{matrix.target}}/$DIY_SH"
         fi
         cp -Rf ./diy/* ./ || true
-        
 
     - name: Apply patches
       run: |
@@ -221,26 +220,39 @@ jobs:
     - name: Defconfig
       run: |
         cd openwrt
-        #rm -rf ./package/kernel/mt76 
-        #rm -rf ./package/kernel/mt7621-qtn-rgmii
         make defconfig
         if [[ ! "${{matrix.target}}" =~ (amlogic_*|armsr_armv8|bcm27xx_*|rockchip_armv8|sunxi_*|x86_*) ]]; then
         sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >>.config
         sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
-        
         if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then 
             sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >>.config
         fi
         make defconfig
         fi
         cat .config
+        
+    - name: Get kernel version
+      id: kernel
+      run: |
+        cd openwrt
+        #KERNEL_VER=$(make -s kernelversion 2>/dev/null | head -n1 | tr -d '[:space:]' || true)
+        # 找到 include/kernel-* 下的版本文件
+        KERNEL_FILE=$(ls include/kernel-* | head -n1)
+        # 提取主版本号
+        BASE_VER=$(basename $KERNEL_FILE | cut -d'-' -f2)
+        # 提取补丁号
+        PATCH_VER=$(grep "^LINUX_VERSION-$BASE_VER" "$KERNEL_FILE" | cut -d= -f2 | tr -d ' .')
+        # 拼接完整版本号
+        KERNEL_FULL="$BASE_VER.$PATCH_VER"
+        echo "KERNEL_VER=$KERNEL_FULL" >> $GITHUB_ENV
+        echo "Kernel full version detected: $KERNEL_FULL"
 
-   # - name: Download package
-   #   id: package
-   #   run: |
-   #     cd openwrt
-   #     make download -j$(($(nproc)+1)) &
-   #     sleep 5
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make download -j$(($(nproc)+1)) &
+        sleep 5
 
     - name: Cache
       uses: stupidloud/cachewrtbuild@main
@@ -267,26 +279,15 @@ jobs:
         shopt -s extglob
         cd openwrt
         echo -e "$(($(nproc)+1)) thread compile"
-        make -j$(($(nproc)+1)) || make V=sc &>build.log || (tail -50 build.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
+        make -j$(($(nproc)+1)) || make V=sc &>error1.log || (tail -50 build.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
         #make -j1 V=sc || make V=sc &>build.log || (tail -50 build.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
         sed -i "s/# CONFIG_IB is not set/CONFIG_IB=y/" .config
         rm -rf staging_dir/toolchain-*/bin/*openwrt-linux-musl-lto-dump
         rm -rf staging_dir/toolchain-*/initial
         df -hT
 
-#    - name: Compile the firmware
- #     id: compile
-  #    run: |
-   #      shopt -s extglob
-    #     cd openwrt
-   #      echo -e "$(($(nproc)+1)) thread compile"
-    #     make tools/install -j$(nproc)
-     #    make toolchain/install -j$(nproc)
-      #   make target/linux/compile -j$(nproc)
-       #  sed -i "s/# CONFIG_IB is not set/CONFIG_IB=y/" .config
-    #     rm -rf staging_dir/toolchain-*/bin/*openwrt-linux-musl-lto-dump
-    #     rm -rf staging_dir/toolchain-*/initial
-     #    df -hT
+    
+
 
     - name: Organize files
       id: organize
@@ -294,22 +295,24 @@ jobs:
       run: |
                 shopt -s extglob
                 cd openwrt/bin/targets/*/*/
-        
+                cp $GITHUB_WORKSPACE/openwrt/.config ${{matrix.target}}.config || true
+                cp $GITHUB_WORKSPACE/openwrt/build_dir/target-*/linux-*/linux-*/.config ${{matrix.target}}_kernel.config || true
+                Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
+                echo "EMOJI=${Emoji[$[$RANDOM % ${#Emoji[@]}]]}" >> $GITHUB_ENV
                 # Unzip .gz files
                 for file in *.gz; do
                   gunzip "$file"
                 done
         
-                # Rename all files, including IMG files after decompression
-                find . -type f -name "meowwrt-*" -exec rename "s/meowwrt-/MeowWrt-${{ env.VERSION }}.2024-/" {} + || true
+                 # Rename all files, including IMG files after decompression
+                find . -type f -name "meowwrt-*" -exec rename "s/meowwrt-/MeowWrt-${{ env.VERSION }}.2025-/" {} + || true
         
                 # Recompress all IMG files back to .gz format
                 for file in *.img; do
                 gzip "$file"
                 done
                 
-                Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
-                echo "EMOJI=${Emoji[$[$RANDOM % ${#Emoji[@]}]]}" >> $GITHUB_ENV
+
 
                 
     - name: Organize Release files
@@ -378,8 +381,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_MGZ0227 }}
       with:
-        files: firmware/${{matrix.target}}/*
-        name: ${{ env.date2 }} ${{matrix.target}} ${{ env.EMOJI }}
+        files: |
+            firmware/${{matrix.target}}/*
+            openwrt/error*.log
+        name: ${{ env.date2 }} ${{matrix.target}} KERNEL:${{ env.KERNEL_VER }} ${{ env.EMOJI }}
         tag_name: ${{ env.date }}_${{matrix.target}}
         body_path: release.txt
     

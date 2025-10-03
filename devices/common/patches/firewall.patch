@@ -1,7 +1,34 @@
+--- a/package/network/config/firewall4/Makefile
++++ b/package/network/config/firewall4/Makefile
+@@ -25,7 +25,8 @@ define Package/firewall4
+ 	+kmod-nft-core +kmod-nft-fib +kmod-nft-offload \
+ 	+kmod-nft-nat \
+ 	+nftables-json \
+-	+ucode +ucode-mod-fs +ucode-mod-ubus +ucode-mod-uci
++	+ucode +ucode-mod-fs +ucode-mod-ubus +ucode-mod-uci \
++	+iptables +ip6tables +kmod-nft-fullcone +kmod-nft-socket +kmod-nft-tproxy
+   EXTRA_DEPENDS:=ucode (>=2022.03.22)
+   PROVIDES:=uci-firewall
+ endef
+@@ -38,10 +39,14 @@ endef
+ define Package/firewall4/conffiles
+ /etc/config/firewall
+ /etc/nftables.d/
++/etc/firewall.user
+ endef
+ 
+ define Package/firewall4/install
+ 	$(CP) -a $(PKG_BUILD_DIR)/root/* $(1)/
++	$(INSTALL_DIR) $(1)/etc/
++	$(INSTALL_CONF) ./files/firewall.include $(1)/etc/firewall.user
++	$(INSTALL_CONF) ./files/firewall.exwan $(1)/etc/firewall.exwan
+ endef
+ 
+ define Build/Compile
 
 --- a/package/network/config/firewall/Makefile
 +++ b/package/network/config/firewall/Makefile
-@@ -30,9 +30,10 @@ define Package/firewall
+@@ -30,9 +30,10 @@
    SECTION:=net
    CATEGORY:=Base system
    TITLE:=OpenWrt C Firewall
@@ -14,10 +41,7 @@
  endef
  
  define Package/firewall/description
- 
-
- define Package/package/network/config/firewall/description
-@@ -59,6 +59,7 @@ define Package/package/network/config/firewall/install
+@@ -57,6 +58,7 @@
  	$(INSTALL_CONF) ./files/firewall.config $(1)/etc/config/firewall
  	$(INSTALL_DIR) $(1)/etc/
  	$(INSTALL_CONF) ./files/firewall.user $(1)/etc/firewall.user
@@ -26,12 +50,19 @@
  	$(INSTALL_CONF) $(PKG_BUILD_DIR)/helpers.conf $(1)/usr/share/fw3
  endef
 
+
 --- a/package/feeds/luci/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js
 +++ b/package/feeds/luci/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js
-@@ -63,6 +63,43 @@ return view.extend({
- 				o = s.option(form.Flag, 'fullcone6', _('Enable FullCone NAT6'));
- 		}
+@@ -58,6 +58,49 @@ return view.extend({
  
+ 		o = s.option(form.Flag, 'drop_invalid', _('Drop invalid packets'));
+ 
++		if (L.hasSystemFeature('fullcone')) {
++			o = s.option(form.Flag, 'fullcone', _('Enable FullCone NAT'));
++			if (fw4)
++				o = s.option(form.Flag, 'fullcone6', _('Enable FullCone NAT6'));
++		}
++
 +		o = s.option(form.Flag, 'expose_wan', _('Expose WAN'), _('Danger! Proceed at your own risk.'));
 +
 +		o = s.option(form.Value, 'export', _('Ports to Expose'), _('Multiple ports can be, separated by spaces, format: 80 81 82'));
