@@ -1,17 +1,25 @@
---- a/include/image.mk
-+++ b/include/image.mk
-@@ -45,7 +45,13 @@
- IMG_PREFIX_VERNUM:=$(if $(CONFIG_VERSION_FILENAMES),$(call sanitize,$(VERSION_NUMBER))-)
- IMG_PREFIX_VERCODE:=$(if $(CONFIG_VERSION_CODE_FILENAMES),$(call sanitize,$(VERSION_CODE))-)
+--- a/scripts/gen_image_generic.sh
++++ b/scripts/gen_image_generic.sh
+@@ -5,6 +5,22 @@
+     echo "SYNTAX: $0 <file> <kernel size> <kernel directory> <rootfs size> <rootfs image> [<align>]"
+     exit 1
+ fi
++# --------------------------------------------------------------------
++# MeowWrt 命名规则：强制修改输出文件名
++# 示例：
++#   openwrt-x86-64-generic-ext4-combined-efi.img
++#   → MeowWrt-10.05.2025-x86-64-generic-ext4-combined-efi.img
++# --------------------------------------------------------------------
++DATE=$(date +%m.%d.%Y)
++ORIGINAL_OUTPUT="$1"
++BASENAME=$(basename "$ORIGINAL_OUTPUT")
++DIRNAME=$(dirname "$ORIGINAL_OUTPUT")
++STRIPPED=$(echo "$BASENAME" | sed 's/^openwrt-//')
++NEW_BASENAME="MeowWrt-${DATE}-${STRIPPED}"
++OUTPUT="${DIRNAME}/${NEW_BASENAME}"
++shift
++set -- "$OUTPUT" "$@"
++echo "⚡ MeowWrt: 输出文件名已强制改为 $OUTPUT"
  
--IMG_PREFIX:=$(VERSION_DIST_SANITIZED)-$(IMG_PREFIX_VERNUM)$(IMG_PREFIX_VERCODE)$(IMG_PREFIX_EXTRA)$(BOARD)-$(SUBTARGET)
-+#
-+# 自定义固件命名规则：MeowWrt-月.日.年-架构-子目标
-+# 示例输出：
-+#   MeowWrt-09.28.2025-x86-64-generic-squashfs-combined-efi.img.gz
-+#
-+BUILD_DATE := $(shell date +%m.%d.%Y)
-+IMG_PREFIX := MeowWrt-$(BUILD_DATE)-$(BOARD)-$(SUBTARGET)
- IMG_ROOTFS:=$(IMG_PREFIX)-rootfs
- IMG_COMBINED:=$(IMG_PREFIX)-combined
- ifeq ($(DUMP),)
+ OUTPUT="$1"
+ KERNELSIZE="$2"
