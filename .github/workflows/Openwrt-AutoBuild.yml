@@ -203,79 +203,36 @@ jobs:
     - name: Apply patches
       run: |
         cd openwrt
-        cp -rf devices/common/patches/* devices/${{matrix.target}}/patches/ 2>/dev/null || true
+        cp -rn devices/common/patches devices/${{matrix.target}}/
           if [ -n "$(ls -A devices/${{matrix.target}}/*.bin.patch 2>/dev/null)" ]; then
             git apply devices/${{matrix.target}}/patches/*.bin.patch
           fi
           find "devices/${{matrix.target}}/patches" -maxdepth 1 -type f -name '*.revert.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -R -B --merge -p1 --forward"
           find "devices/${{matrix.target}}/patches" -maxdepth 1 -type f -name '*.patch' ! -name '*.revert.patch' ! -name '*.bin.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -B --merge -p1 --forward"
-
-        # 安全地批量修改所有 config 文件
-        echo "🔧 Appending kernel and CPU options..."
-        for cfg in $(find target/linux -type f -name "config-*"); do
-          sed -i '$a \
-          CONFIG_CPU_FREQ_GOV_POWERSAVE=y \
-          CONFIG_CPU_FREQ_GOV_USERSPACE=y \
-          CONFIG_CPU_FREQ_GOV_ONDEMAND=y \
-          CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y \
-          CONFIG_CRYPTO_CHACHA20_NEON=y \
-          CONFIG_CRYPTO_CHACHA20POLY1305=y \
-          CONFIG_FAT_DEFAULT_IOCHARSET="utf8" \
-          ' "$cfg"
-        done
-
-
-    - name: Force build target to x86_64
-      run: |
-        cd openwrt
-        echo "🔧 Forcing target to x86_64..."
-        sed -i '/CONFIG_TARGET_/d' .config || true
-        touch .config
-
-        echo 'CONFIG_TARGET_x86=y' >> .config
-        echo 'CONFIG_TARGET_x86_64=y' >> .config
-        echo 'CONFIG_TARGET_BOARD="x86"' >> .config
-        echo 'CONFIG_TARGET_SUBTARGET="64"' >> .config
-        echo 'CONFIG_TARGET_ARCH_PACKAGES="x86_64"' >> .config
-
-        echo "✅ 已写入目标配置，执行 make defconfig..."
-        make defconfig
-        echo "🔎 验证最终目标："
-        grep "CONFIG_TARGET_" .config | head -n 20
-
+        sed -i '$a  \
+        CONFIG_CPU_FREQ_GOV_POWERSAVE=y \
+        CONFIG_CPU_FREQ_GOV_USERSPACE=y \
+        CONFIG_CPU_FREQ_GOV_ONDEMAND=y \
+        CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y \
+        CONFIG_CRYPTO_CHACHA20_NEON=y \
+        CONFIG_CRYPTO_CHACHA20POLY1305=y \
+        CONFIG_FAT_DEFAULT_IOCHARSET="utf8" \
+        ' `find target/linux -path "target/linux/*/config-*"`
 
     - name: Defconfig
       run: |
         cd openwrt
-        # 在这里强制确保目标架构正确
-        sed -i '/CONFIG_TARGET_/d' .config
-        echo "CONFIG_TARGET_x86=y" >> .config
-        echo "CONFIG_TARGET_x86_64=y" >> .config
-        
-        # 再执行第一次 defconfig
         make defconfig
-
-        # 你的无线驱动/视频模块过滤逻辑放这里
         if [[ ! "${{matrix.target}}" =~ (amlogic_*|armsr_armv8|bcm27xx_*|rockchip_armv8|sunxi_*|x86_*) ]]; then
-          sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >>.config
-          sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
-          if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then 
-              sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >>.config
-          fi
+        sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >>.config
+        sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
+        if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then 
+            sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >>.config
         fi
-
-        # 再补一次 defconfig，生成最终有效配置
         make defconfig
+        fi
         cat .config
-
-
-
-    - name: Verify Target Board
-      run: |
-        cd openwrt
-        echo "🔎 Final target check:"
-        grep "CONFIG_TARGET_" .config | grep -E "x86|bcm53" || true
-
+        
     - name: Get kernel version
       id: kernel
       run: |
