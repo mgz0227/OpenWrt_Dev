@@ -222,17 +222,27 @@ jobs:
     - name: Defconfig
       run: |
         cd openwrt
-        make defconfig
-        if [[ ! "${{matrix.target}}" =~ (amlogic_*|armsr_armv8|bcm27xx_*|rockchip_armv8|sunxi_*|x86_*) ]]; then
-        sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >>.config
-        sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
-        if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then 
-            sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >>.config
-        fi
-        make defconfig
-        fi
-        cat .config
+        # 在这里强制确保目标架构正确
+        sed -i '/CONFIG_TARGET_/d' .config
+        echo "CONFIG_TARGET_x86=y" >> .config
+        echo "CONFIG_TARGET_x86_64=y" >> .config
         
+        # 再执行第一次 defconfig
+        make defconfig
+
+        # 你的无线驱动/视频模块过滤逻辑放这里
+        if [[ ! "${{matrix.target}}" =~ (amlogic_*|armsr_armv8|bcm27xx_*|rockchip_armv8|sunxi_*|x86_*) ]]; then
+          sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >>.config
+          sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
+          if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then 
+              sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >>.config
+          fi
+        fi
+
+        # 再补一次 defconfig，生成最终有效配置
+        make defconfig
+        cat .config
+
     - name: Get kernel version
       id: kernel
       run: |
