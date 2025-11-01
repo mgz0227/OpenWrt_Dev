@@ -229,17 +229,19 @@ jobs:
       run: |
         cd openwrt
         echo "🔧 Forcing target to x86_64..."
-        sed -i '/CONFIG_TARGET_/d' .config
-        cat >> .config <<'EOF'
-          CONFIG_TARGET_x86=y
-          CONFIG_TARGET_x86_64=y
-          CONFIG_TARGET_BOARD="x86"
-          CONFIG_TARGET_SUBTARGET="64"
-          CONFIG_TARGET_ARCH_PACKAGES="x86_64"
-          EOF
-        make defconfig
-        grep "CONFIG_TARGET_" .config | head -n 20
+        sed -i '/CONFIG_TARGET_/d' .config || true
+        touch .config
 
+        echo 'CONFIG_TARGET_x86=y' >> .config
+        echo 'CONFIG_TARGET_x86_64=y' >> .config
+        echo 'CONFIG_TARGET_BOARD="x86"' >> .config
+        echo 'CONFIG_TARGET_SUBTARGET="64"' >> .config
+        echo 'CONFIG_TARGET_ARCH_PACKAGES="x86_64"' >> .config
+
+        echo "✅ 已写入目标配置，执行 make defconfig..."
+        make defconfig
+        echo "🔎 验证最终目标："
+        grep "CONFIG_TARGET_" .config | head -n 20
 
 
     - name: Defconfig
