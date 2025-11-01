@@ -222,16 +222,31 @@ jobs:
     - name: Defconfig
       run: |
         cd openwrt
+        echo "🔧 Running make defconfig..."
+
+        # 执行 defconfig 生成基础配置
         make defconfig
+
+        # 下载并合并完整配置文件
+        wget -N https://cdn.mgz.la/openwrt/x86_64.config -O target.config
+        wget -N https://cdn.mgz.la/openwrt/x86_64_kernel.config -O kernel.config
+        cat target.config kernel.config > .config
+
+        # 特定目标设备处理（禁用无线、视频支持等）
         if [[ ! "${{matrix.target}}" =~ (amlogic_*|armsr_armv8|bcm27xx_*|rockchip_armv8|sunxi_*|x86_*) ]]; then
-        sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >>.config
-        sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
-        if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then 
-            sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >>.config
+          echo "🔧 Disabling wireless drivers for target: ${{ matrix.target }}"
+          sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >> .config
+          sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
+          if [[ "${{matrix.target}}" == "rockchip_rk35xx" ]]; then
+            echo "🔧 Disabling video support for rockchip_rk35xx"
+            sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >> .config
+          fi
         fi
-        make defconfig
-        fi
+
+        # 确认最终的 .config 文件
+        echo "🔎 Final .config settings:"
         cat .config
+
         
     - name: Get kernel version
       id: kernel
