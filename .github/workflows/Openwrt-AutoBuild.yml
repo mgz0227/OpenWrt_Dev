@@ -298,6 +298,7 @@ jobs:
         cd openwrt
         echo -e "$(($(nproc)+1)) thread compile"
         make -j1 V=sc toolchain/gcc/initial
+        make -j1 V=sc toolchain/install
         #make tools -j$(($(nproc)+1)) # 编译主机端工具
         #make toolchain -j$(($(nproc)+1)) # 编译交叉编译工具链
         #make tools/install -j$(($(nproc)+1))
