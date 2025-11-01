@@ -203,21 +203,44 @@ jobs:
     - name: Apply patches
       run: |
         cd openwrt
-        cp -rn devices/common/patches devices/${{matrix.target}}/
+        cp -rf devices/common/patches/* devices/${{matrix.target}}/patches/ 2>/dev/null || true
           if [ -n "$(ls -A devices/${{matrix.target}}/*.bin.patch 2>/dev/null)" ]; then
             git apply devices/${{matrix.target}}/patches/*.bin.patch
           fi
           find "devices/${{matrix.target}}/patches" -maxdepth 1 -type f -name '*.revert.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -R -B --merge -p1 --forward"
           find "devices/${{matrix.target}}/patches" -maxdepth 1 -type f -name '*.patch' ! -name '*.revert.patch' ! -name '*.bin.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -B --merge -p1 --forward"
-        sed -i '$a  \
-        CONFIG_CPU_FREQ_GOV_POWERSAVE=y \
-        CONFIG_CPU_FREQ_GOV_USERSPACE=y \
-        CONFIG_CPU_FREQ_GOV_ONDEMAND=y \
-        CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y \
-        CONFIG_CRYPTO_CHACHA20_NEON=y \
-        CONFIG_CRYPTO_CHACHA20POLY1305=y \
-        CONFIG_FAT_DEFAULT_IOCHARSET="utf8" \
-        ' `find target/linux -path "target/linux/*/config-*"`
+
+        # 安全地批量修改所有 config 文件
+        echo "🔧 Appending kernel and CPU options..."
+        for cfg in $(find target/linux -type f -name "config-*"); do
+          sed -i '$a \
+          CONFIG_CPU_FREQ_GOV_POWERSAVE=y \
+          CONFIG_CPU_FREQ_GOV_USERSPACE=y \
+          CONFIG_CPU_FREQ_GOV_ONDEMAND=y \
+          CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y \
+          CONFIG_CRYPTO_CHACHA20_NEON=y \
+          CONFIG_CRYPTO_CHACHA20POLY1305=y \
+          CONFIG_FAT_DEFAULT_IOCHARSET="utf8" \
+          ' "$cfg"
+        done
+
+
+    - name: Force build target to x86_64
+      run: |
+        cd openwrt
+        echo "🔧 Forcing target to x86_64..."
+        sed -i '/CONFIG_TARGET_/d' .config
+        cat >> .config <<'EOF'
+          CONFIG_TARGET_x86=y
+          CONFIG_TARGET_x86_64=y
+          CONFIG_TARGET_BOARD="x86"
+          CONFIG_TARGET_SUBTARGET="64"
+          CONFIG_TARGET_ARCH_PACKAGES="x86_64"
+          EOF
+        make defconfig
+        grep "CONFIG_TARGET_" .config | head -n 20
+
+
 
     - name: Defconfig
       run: |
@@ -242,6 +265,14 @@ jobs:
         # 再补一次 defconfig，生成最终有效配置
         make defconfig
         cat .config
+
+
+
+    - name: Verify Target Board
+      run: |
+        cd openwrt
+        echo "🔎 Final target check:"
+        grep "CONFIG_TARGET_" .config | grep -E "x86|bcm53" || true
 
     - name: Get kernel version
       id: kernel
