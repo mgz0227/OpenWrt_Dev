@@ -8,7 +8,7 @@ cd new
 git reset --hard origin/6.18.y
 
 cp -rf --parents target/linux package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain config ../
-find target/linux -mindepth 1 -maxdepth 1 ! -name 'generic' ! -name 'x86' -exec rm -rf {} +
+rm -rf target/linux/bcm53xx
 cd -
 
 cd feeds/packages
