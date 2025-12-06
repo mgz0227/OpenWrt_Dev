@@ -11,16 +11,6 @@ cp -rf --parents target/linux package/boot package/devel package/firmware packag
 rm -rf target/linux/bcm53xx
 cd -
 
-cd package
-rm -rf kernel/linux/modules/crypto.mk kernel/linux/modules/lib.mk kernel/mac80211/patches/build/999-fix_build_on_6_18.patch
-git_clone_path 6.18 https://github.com/namiltd/openwrt/ kernel/linux/modules kernel/mac80211
-cd ../
-
-rm -rf target/linux/generic
-git_clone_path 6.18 https://github.com/namiltd/openwrt/ target/linux/generic
-
-rm -rf target/linux/x86
-git_clone_path 6.18.y https://github.com/mgz0227/openwrt target/linux/x86
 
 
 
