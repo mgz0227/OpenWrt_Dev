@@ -5,7 +5,7 @@ shopt -s extglob
 rm -rf target/linux package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain
 mkdir new; cp -rf .git new/.git
 cd new
-git reset --hard origin/master
+git reset --hard origin/6.18.y
 
 cp -rf --parents target/linux package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain config ../
 rm -rf target/linux/bcm53xx
