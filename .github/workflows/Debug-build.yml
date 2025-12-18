@@ -297,7 +297,7 @@ jobs:
         shopt -s extglob
         cd openwrt
         echo -e "$(($(nproc)+1)) thread compile"
-        make package/kernel/linux || make V=sc &>error1.log || (tail -50 error1.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
+        make package/kernel/linux/compile || make V=sc &>error1.log || (tail -50 error1.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
         #make tools -j$(($(nproc)+1)) # 编译主机端工具
         #make toolchain -j$(($(nproc)+1)) # 编译交叉编译工具链
         #make tools/install -j$(($(nproc)+1))
