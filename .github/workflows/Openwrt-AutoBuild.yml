@@ -244,7 +244,7 @@ jobs:
           fi
         fi
 
-        #make oldconfi
+        make defconfig
         # 确认最终的 .config 文件
         echo "🔎 Final .config settings:"
         cat .config
