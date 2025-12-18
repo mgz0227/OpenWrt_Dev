@@ -297,9 +297,12 @@ jobs:
         shopt -s extglob
         cd openwrt
         echo -e "$(($(nproc)+1)) thread compile"
-        make -j$(($(nproc)+1)) tools/m4/compile tools/m4/install
-        make -j$(($(nproc)+1)) tools/flex/compile tools/flex/install
-        make -j$(($(nproc)+1)) tools/bison/compile tools/bison/install
+        rm -f staging_dir/host/bin/m4
+        rm -rf build_dir/host/m4-* build_dir/host/flex-* build_dir/host/bison-*
+        make -j$(nproc) tools/compile
+        make -j$(($(nproc)+1)) tools/m4/compile
+        make -j$(($(nproc)+1)) tools/flex/compile
+        make -j$(($(nproc)+1)) tools/bison/compile
         make package/kernel/linux/compile || make package/kernel/linux/compile V=sc &>error1.log || { tail -50 error1.log; df -hT; exit 1; }
         #make tools -j$(($(nproc)+1)) # 编译主机端工具
         #make toolchain -j$(($(nproc)+1)) # 编译交叉编译工具链
