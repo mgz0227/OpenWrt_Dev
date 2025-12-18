@@ -297,6 +297,9 @@ jobs:
         shopt -s extglob
         cd openwrt
         echo -e "$(($(nproc)+1)) thread compile"
+        make -j$(($(nproc)+1)) V=sc tools/m4/compile tools/m4/install
+        make -j$(($(nproc)+1)) V=sc tools/flex/compile tools/flex/install
+        make -j$(($(nproc)+1)) V=sc tools/bison/compile tools/bison/install
         make package/kernel/linux/compile || make package/kernel/linux/compile V=sc &>error1.log || (tail -50 error1.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
         #make tools -j$(($(nproc)+1)) # 编译主机端工具
         #make toolchain -j$(($(nproc)+1)) # 编译交叉编译工具链
