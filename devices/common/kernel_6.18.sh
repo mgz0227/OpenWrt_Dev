@@ -19,8 +19,7 @@ cd -
 
 
 cd feeds/packages
-rm -rf net/xtables-addons net/strongswan utils/coremark lang/golang utils/open-vm-tools libs/rpcsvc-proto libs
-git_clone_path master https://github.com/openwrt/packages net/xtables-addons net/strongswan lang/golang utils/open-vm-tools libs/rpcsvc-proto libs
+rm -rf libs/libpfring
 cd ../../
 
 
