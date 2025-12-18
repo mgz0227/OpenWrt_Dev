@@ -8,9 +8,6 @@
 
 name: Debug Build OpenWrt
 
-on: 
-  repository_dispatch:
-
 env:
   REPO_TOKEN: ${{ secrets.TOKEN_MGZ0227 }}
   PPPOE_USERNAME: ${{ secrets.PPPOE_USERNAME }}
