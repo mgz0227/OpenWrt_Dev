@@ -299,8 +299,8 @@ jobs:
         echo -e "$(($(nproc)+1)) thread compile"
         rm -f staging_dir/host/bin/m4
         rm -rf build_dir/host/m4-* build_dir/host/flex-* build_dir/host/bison-*
-        make -j$(nproc) tools/compile
-        make package/kernel/linux/compile || make package/kernel/linux/compile V=sc &>error1.log || { tail -50 error1.log; df -hT; exit 1; }
+        make -j$(($(nproc)+1)) tools/compile
+        make -j$(($(nproc)+1)) package/kernel/linux/compile || make package/kernel/linux/compile V=sc &>error1.log || { tail -50 error1.log; df -hT; exit 1; }
         #make tools -j$(($(nproc)+1)) # 编译主机端工具
         #make toolchain -j$(($(nproc)+1)) # 编译交叉编译工具链
         #make tools/install -j$(($(nproc)+1))
