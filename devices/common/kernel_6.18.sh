@@ -22,7 +22,9 @@ cd feeds/packages
 rm -rf libs/libpfring
 cd ../../
 
-
+cd feeds/miaogongzi
+rm -rf fibocom_QMI_WWAN
+cd ../../
 
 
 cd package
