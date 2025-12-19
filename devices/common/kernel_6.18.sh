@@ -25,7 +25,7 @@ cd ../../
 
 
 
-#cd package
-#rm -rf devel/kselftests-bpf 
+cd package
+rm -rf devel/kselftests-bpf 
 #devel/perf
-#cd ../
+cd ../
