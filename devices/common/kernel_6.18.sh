@@ -28,7 +28,7 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf 
+rm -rf devel/kselftests-bpf kernel/r81* 
 #devel/perf
 cd ../
 
