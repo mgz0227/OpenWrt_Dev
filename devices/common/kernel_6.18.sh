@@ -28,7 +28,7 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf kernel/r8101 
+rm -rf devel/kselftests-bpf kernel/r8101 kernel/r8125 kernel/r8126 kernel/r8169
 #devel/perf
 cd ../
 
