@@ -223,8 +223,6 @@ jobs:
     - name: Defconfig
       run: |
         cd openwrt
-        echo "🔧 Running make defconfig..."
-
         # 执行 defconfig 生成基础配置
         make defconfig
 
@@ -237,7 +235,6 @@ jobs:
             sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >> .config
           fi
         fi
-
         make defconfig
         # 确认最终的 .config 文件
         echo "🔎 Final .config settings:"
