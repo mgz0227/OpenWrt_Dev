@@ -22,6 +22,10 @@ cd feeds/packages
 rm -rf libs/libpfring net/xtables-addons
 cd ../../
 
+cd feeds/routing
+rm -rf batman-adv
+cd ../../
+
 cd feeds/miaogongzi
 rm -rf fibocom_QMI_WWAN
 cd ../../
