@@ -245,6 +245,7 @@ jobs:
         # 彻底关掉 mac80211 / cfg80211 / wifi 驱动，避免 backports 编译 ath9k
         sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >> .config
         sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
+        sed -n '/# Video Support/,/# end of Video Support/p' .config | sed -e 's/=m/=n/' >> .config
         make defconfig
         # 确认最终的 .config 文件
         echo "🔎 Final .config settings:"
