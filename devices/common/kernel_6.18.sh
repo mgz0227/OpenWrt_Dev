@@ -19,7 +19,7 @@ cd -
 
 
 cd feeds/packages
-rm -rf libs/libpfring
+rm -rf libs/libpfring xtables-addons
 cd ../../
 
 cd feeds/miaogongzi
