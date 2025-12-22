@@ -285,7 +285,7 @@ jobs:
         shopt -s extglob
         cd openwrt
         if [[ -f staging_dir/*${{ env.MTARGET }}*/bin ]]; then
-            rm -rf staging_dir/!(*${{ env.MTARGET }}*|host|hostpkg) build_dir/!(*${{ env.MTARGET }}*|host|hostpkg)
+            rm -rvf staging_dir/!(*${{ env.MTARGET }}*|host|hostpkg) build_dir/!(*${{ env.MTARGET }}*|host|hostpkg)
         fi
         df -hT
 
