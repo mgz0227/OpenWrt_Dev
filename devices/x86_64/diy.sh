@@ -22,6 +22,5 @@ wget -N https://raw.githubusercontent.com/mgz0227/openwrt/refs/heads/6.18.y/targ
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += kmod-fs-f2fs kmod-mmc kmod-sdhci kmod-usb-hid usbutils pciutils lm-sensors-detect kmod-atlantic kmod-vmxnet3 kmod-igbvf kmod-iavf kmod-bnx2x kmod-pcnet32 kmod-tulip kmod-8139cp kmod-8139too kmod-i40e kmod-drm-amdgpu kmod-mlx4-core kmod-mlx5-core fdisk lsblk kmod-phy-broadcom kmod-ixgbevf/' target/linux/x86/Makefile
 
-mv -f tmp/r81* feeds/miaogongzi/
 
 sed -i 's/256/1024/g' target/linux/x86/image/Makefile
