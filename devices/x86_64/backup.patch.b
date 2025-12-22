@@ -16,3 +16,14 @@
           s/^(CONFIG_PACKAGE_kmod-video.*)=.*/# \1 is not set/;
           s/^(CONFIG_PACKAGE_kmod-cec)=.*/# \1 is not set/;
         ' .config       
+CONFIG_PACKAGE_kmod-sound-core=n
+CONFIG_PACKAGE_kmod-sound-hda-codec-realtek=n
+CONFIG_PACKAGE_kmod-snd-hda-core=n
+CONFIG_PACKAGE_kmod-usb-audio=n
+CONFIG_PACKAGE_alsa-lib=n
+CONFIG_PACKAGE_alsa-utils=n
+
+CONFIG_PACKAGE_kmod-drm=n
+CONFIG_PACKAGE_kmod-drm-display-helper=n
+CONFIG_PACKAGE_kmod-drm-kms-helper=n
+CONFIG_PACKAGE_kmod-gpu-core=n
