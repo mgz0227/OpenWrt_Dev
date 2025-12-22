@@ -226,7 +226,13 @@ jobs:
         # 执行 defconfig 生成基础配置
         make defconfig
 
-
+        echo "🔧 Disabling sound packages (soft-router build)"
+        # 关掉所有 sound / alsa / usb-audio 相关包选择
+        sed -i -E '
+          s/^(CONFIG_PACKAGE_kmod-(sound|snd-|usb-audio|ac97|pcspkr).*)=.*/# \1 is not set/;
+          s/^(CONFIG_PACKAGE_alsa-lib)=.*/# \1 is not set/;
+          s/^(CONFIG_PACKAGE_alsa-utils)=.*/# \1 is not set/;
+        ' .config
         # 彻底关掉 mac80211 / cfg80211 / wifi 驱动，避免 backports 编译 ath9k
         sed -n '/# Wireless Drivers/,/# end of Wireless Drivers/p' .config | sed -e 's/=m/=n/' >> .config
         sed -i "s/\(kmod-qca.*\)=m/\1=n/" .config
