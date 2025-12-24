@@ -44,11 +44,11 @@ rm -rf fibocom_QMI_WWAN
 cd ../../
 
 
-#cd package
-#rm -rf devel/kselftests-bpf kernel/r8101 kernel/r8125 kernel/r8126 kernel/r8169 libs/libnl/Makefile
-#wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/
+cd package
+rm -rf devel/kselftests-bpf kernel/r8101 kernel/r8125 kernel/r8126 kernel/r8169 libs/libnl/Makefile
+wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/
 #devel/perf
-#cd ../
+cd ../
 
 
 #sed -i -E 's/^CONFIG_PACKAGE_kmod-(mac80211|cfg80211)=m$/# & is not set/' .config
