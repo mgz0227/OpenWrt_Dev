@@ -21,14 +21,15 @@ rm -rf libs/libpfring/Makefile
 wget -N https://raw.githubusercontent.com/graysky2/packages/91f0b3e8621ae529d01356bfe411c91d25e22b4b/libs/libpfring/patches/0001-fix-cross-compiling.patch -P libs/libpfring/patches/
 wget -N https://raw.githubusercontent.com/graysky2/packages/91f0b3e8621ae529d01356bfe411c91d25e22b4b/libs/libpfring/patches/010-gcc14.patch -P libs/libpfring/patches/
 wget -N https://raw.githubusercontent.com/graysky2/packages/91f0b3e8621ae529d01356bfe411c91d25e22b4b/libs/libpfring/patches/100-fix-compilation-warning.patch -P libs/libpfring/patches/
-wget -N libs/libpfring/patches/200-net-s-dev_get_flags-netif_get_flags.patch -P libs/libpfring/patches/
+wget -N https://raw.githubusercontent.com/graysky2/packages/91f0b3e8621ae529d01356bfe411c91d25e22b4b/libs/libpfring/patches/200-net-s-dev_get_flags-netif_get_flags.patch -P libs/libpfring/patches/
 wget -N https://raw.githubusercontent.com/graysky2/packages/91f0b3e8621ae529d01356bfe411c91d25e22b4b/libs/libpfring/Makefile -P libs/libpfring/
 cd ../../
 
 
 
 cd feeds/packages
-rm -rf net/xtables-addons net/jool libs/libpfring
+rm -rf net/xtables-addons net/jool 
+#libs/libpfring
 git_clone_path master https://github.com/openwrt/packages net/jool
 wget -N https://raw.githubusercontent.com/graysky2/packages/c55afaa2bebca50a0e019a249c2748e7d7f745b7/kernel/ovpn-dco/Makefile -P kernel/ovpn-dco/
 wget -N https://raw.githubusercontent.com/graysky2/packages/668744be2cd07997a9d720d08bfaaac032bc009b/kernel/v4l2loopback/Makefile -P kernel/v4l2loopback/
@@ -39,14 +40,15 @@ cd feeds/routing
 rm -rf batman-adv
 cd ../../
 
-cd feeds/miaogongzi
-rm -rf fibocom_QMI_WWAN
-cd ../../
+#cd feeds/miaogongzi
+#rm -rf fibocom_QMI_WWAN
+#cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf kernel/r8101 kernel/r8125 kernel/r8126 kernel/r8169 libs/libnl/Makefile
+rm -rf devel/kselftests-bpf  libs/libnl/Makefile
 wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/
+#kernel/r8101 kernel/r8125 kernel/r8126 kernel/r8169
 #devel/perf
 cd ../
 
