@@ -247,6 +247,10 @@ jobs:
           s/^(CONFIG_PACKAGE_kmod-video.*)=.*/# \1 is not set/;
           s/^(CONFIG_PACKAGE_kmod-cec)=.*/# \1 is not set/;
         ' .config    
+        sed -i -E 's/^CONFIG_PACKAGE_kmod-(mac80211|cfg80211)=m$/# & is not set/' .config
+        sed -i -E 's/^CONFIG_PACKAGE_kmod-(ath9k|ath9k-common|ath5k|iwlwifi|mt76.*)=m$/# & is not set/' .config
+        sed -i -E 's/^CONFIG_PACKAGE_(MAC80211|CFG80211)_.+=y$/# & is not set/' .config
+
         make defconfig
         #make oldconfig
         fi
