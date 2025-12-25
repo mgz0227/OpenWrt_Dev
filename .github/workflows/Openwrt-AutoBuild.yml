@@ -304,10 +304,10 @@ jobs:
         shopt -s extglob
         cd openwrt
         echo -e "$(($(nproc)+1)) thread compile"
-        make tools -j$(($(nproc)+1)) # 编译主机端工具
-        make toolchain -j$(($(nproc)+1)) # 编译交叉编译工具链
-        make tools/install -j$(($(nproc)+1))
-        make toolchain/install -j$(($(nproc)+1)) 
+        #make tools -j$(($(nproc)+1)) # 编译主机端工具
+        #make toolchain -j$(($(nproc)+1)) # 编译交叉编译工具链
+        #make tools/install -j$(($(nproc)+1))
+        #make toolchain/install -j$(($(nproc)+1)) 
         #make -j$(($(nproc)+1)) package/kernel/linux/compile || make package/kernel/linux/compile V=sc &>error1.log || { tail -50 error1.log; df -hT; exit 1; }
         #make target/compile -j$(($(nproc)+1)) || make V=sc &>error1.log 
         #make target/install -j$(($(nproc)+1)) || make V=sc &>error1.log 
