@@ -47,9 +47,9 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/r8168
+rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/r8168 kernel/mt76 kernel/ath10k-ct
 wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/
-# kernel/r81* kernel/rtl8812au-ct kernel/mt76 kernel/ath10k-ct
+# kernel/r81* kernel/rtl8812au-ct 
 #devel/perf
 cd ../
 
