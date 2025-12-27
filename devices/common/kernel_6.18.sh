@@ -36,9 +36,9 @@ wget -N https://raw.githubusercontent.com/graysky2/packages/668744be2cd07997a9d7
 
 cd ../../
 
-cd feeds/routing
-rm -rf batman-adv
-cd ../../
+#cd feeds/routing
+#rm -rf batman-adv
+#cd ../../
 
 #cd feeds/miaogongzi
 #rm -rf fibocom_QMI_WWAN
@@ -46,9 +46,9 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/r81* kernel/rtl8812au-ct kernel/mt76 kernel/ath10k-ct
+rm -rf devel/kselftests-bpf  libs/libnl/Makefile
 wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/
-#kernel/r8101 kernel/r8125 kernel/r8126 kernel/r8169
+# kernel/r81* kernel/rtl8812au-ct kernel/mt76 kernel/ath10k-ct
 #devel/perf
 cd ../
 
