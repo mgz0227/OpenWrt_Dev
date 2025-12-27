@@ -47,7 +47,7 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/r8168  kernel/rtl8812au-ct kernel/ath10k-ct
+rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/r8168  kernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76
 wget -N https://cdn.mgz.la/openwrt/add-kernel-6.18-timer-API-compatibility.patch -P kernel/mt76/patches/
 wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/ 
 #devel/perf kernel/mt76
