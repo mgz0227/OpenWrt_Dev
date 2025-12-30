@@ -1,4 +1,4 @@
-[![Build OpenWrt](https://github.com/mgz0227/OpenWrt_x86/actions/workflows/Openwrt-AutoBuild.yml/badge.svg)](https://github.com/mgz0227/OpenWrt_x86/actions/workflows/Openwrt-AutoBuild.yml)
+[![Build OpenWrt](https://github.com/mgz0227/OpenWrt_Dev/actions/workflows/Openwrt-AutoBuild.yml/badge.svg)](https://github.com/mgz0227/OpenWrt_Dev/actions/workflows/Openwrt-AutoBuild.yml)
 
 
 ## 1. **固件**
