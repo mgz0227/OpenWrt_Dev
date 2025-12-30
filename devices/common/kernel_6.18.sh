@@ -51,7 +51,7 @@ cd ../../
 cd package
 rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/r8168/patches/002* kernel/r8168/Makefile  kernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76
 wget -N https://raw.githubusercontent.com/Noltari/openwrt/refs/heads/rtl-eth-next/package/kernel/r8168/patches/002-Makefile-fix-CFLAGS-with-linux-6.15.patch -P kernel/r8168/patches/
-wget -N https://raw.githubusercontent.com/Noltari/openwrt/refs/heads/rtl-eth-next/package/kernel/r8168/Makefile -P kernel/r8168/patches/
+wget -N https://raw.githubusercontent.com/Noltari/openwrt/refs/heads/rtl-eth-next/package/kernel/r8168/Makefile -P kernel/r8168/
 
 
 
