@@ -51,22 +51,7 @@
 + DIY云编译教程参考: [Read the details in my blog (in Chinese) | 中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
 
 
-+ 默认插件包含: Opkg 软件包管理、openclash、ddns-go、adblock（广告拦截）。
-其他插件请自行在 后台->软件包 中安装,系统升级不会丢失插件.每次系统升级完成连接网络后,会自动安装所有已自选安装的插件。
 
-
-
-------
-For English
-
-Build OpenWrt using GitHub Actions
-
-## Usage
-
-- Sign up for [GitHub Actions](https://github.com/features/actions/signup)
-- Fork [this GitHub repository](https://github.com/kiddin9/OpenWrt)
-- click the `Star` button, and the build will starts automatically.Progress can be viewed on the Actions page.
-- When the build is complete, click the `Artifacts` button in the upper right corner of the Actions page to download the binaries.
 
 
 ## Acknowledgments
