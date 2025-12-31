@@ -13,7 +13,7 @@ cd -
 
 
 #wget -N https://github.com/immortalwrt/immortalwrt/raw/refs/heads/openwrt-25.12/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
-
+wget -N https://github.com/mgz0227/openwrt/commit/0495522cb43f1c23f7f8f1365b5a2d6ff0d4305e.patch -P devices/common/patches/
 
 cd feeds/packages
 rm -rf libs/libpfring/patches/* libs/libmariadb
