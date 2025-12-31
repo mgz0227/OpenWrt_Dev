@@ -49,9 +49,12 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/nat46 kernel/mac80211 kernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76 kernel/r8168/patches/002* kernel/r8101/patches/002*
-git_clone_path nat46 https://github.com/graysky2/openwrt kernel/nat46
-git_clone_path 6.18-mac80211 https://github.com/graysky2/openwrt kernel/mac80211
+rm -rf devel/kselftests-bpf  libs/libnl/Makefilekernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76 kernel/r8168/patches/002* kernel/r8101/patches/002*
+#mac80211: initial support for linux 6.18
+wget -N https://github.com/mgz0227/openwrt/commit/fbb5e09a010b511cc831d952a273ae1789255532.patch -P devices/common/patches/
+#nat46: fix reproducible-build failure and use latest git
+wget -N https://github.com/graysky2/openwrt/commit/e52d04b65d1942f581533cb2054e74f4ff5bd70b.patch -P devices/common/patches/
+
 
 #wget -O kernel/mt76/patches/100-fix-mt76-timer-compat.patch https://patch-diff.githubusercontent.com/raw/openwrt/mt76/pull/1026.patch
 wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/ 
