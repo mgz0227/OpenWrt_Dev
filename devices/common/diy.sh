@@ -99,3 +99,4 @@ sed -i "s/OpenWrt/MeowWrt/g" package/base-files/files/bin/config_generate packag
 sed -i -e "s/set \${s}.country='\${country || ''}'/set \${s}.country='\${country || \"CN\"}'/g" -e "s/set \${s}.disabled=.*/set \${s}.disabled='0'/" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 
 #rm -rf package/feeds/packages/jool
+wget -N https://github.com/mgz0227/openwrt/commit/0495522cb43f1c23f7f8f1365b5a2d6ff0d4305e.patch -P devices/common/patches/
