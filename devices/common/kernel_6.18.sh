@@ -50,10 +50,6 @@ cd ../../
 
 cd package
 rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/r8168/patches/002* kernel/r8168/Makefile  kernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76
-wget -N https://raw.githubusercontent.com/Noltari/openwrt/refs/heads/rtl-eth-next/package/kernel/r8168/patches/002-Makefile-fix-CFLAGS-with-linux-6.15.patch -P kernel/r8168/patches/
-wget -N https://raw.githubusercontent.com/Noltari/openwrt/refs/heads/rtl-eth-next/package/kernel/r8168/Makefile -P kernel/r8168/
-
-
 
 #wget -O kernel/mt76/patches/100-fix-mt76-timer-compat.patch https://patch-diff.githubusercontent.com/raw/openwrt/mt76/pull/1026.patch
 wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/ 
