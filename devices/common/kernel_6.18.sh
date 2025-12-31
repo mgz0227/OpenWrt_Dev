@@ -53,8 +53,7 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf  libs/libnl/Makefilekernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76 kernel/r8168/patches/002* kernel/r8101/patches/002*
-
+rm -rf devel/kselftests-bpf  libs/libnl/Makefilekernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76
 #wget -O kernel/mt76/patches/100-fix-mt76-timer-compat.patch https://patch-diff.githubusercontent.com/raw/openwrt/mt76/pull/1026.patch
 wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/ 
 
