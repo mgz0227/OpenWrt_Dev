@@ -49,7 +49,7 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf  libs/libnl/Makefile  kernel/nat46 kernel/mac80211 kernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76
+rm -rf devel/kselftests-bpf  libs/libnl/Makefile  kernel/nat46 kernel/mac80211 kernel/rtl8812au-ct kernel/ath10k-ct kernel/mt76 kernel/r8168/patches/002* kernel/r8101/patches/002*
 git_clone_path nat46 https://github.com/graysky2/openwrt kernel/nat46
 git_clone_path 6.18-mac80211 https://github.com/graysky2/openwrt kernel/mac80211
 
