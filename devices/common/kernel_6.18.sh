@@ -12,7 +12,8 @@ rm -rf target/linux/bcm53xx
 cd -
 
 #mac80211: initial support for linux 6.18
-wget -N https://github.com/mgz0227/openwrt/commit/fbb5e09a010b511cc831d952a273ae1789255532.patch -P devices/common/patches/
+#wget -N https://github.com/mgz0227/openwrt/commit/fbb5e09a010b511cc831d952a273ae1789255532.patch -P devices/common/patches/
+
 #nat46: fix reproducible-build failure and use latest git
 wget -N https://github.com/graysky2/openwrt/commit/e52d04b65d1942f581533cb2054e74f4ff5bd70b.patch -P devices/common/patches/
 #wget -N https://github.com/immortalwrt/immortalwrt/raw/refs/heads/openwrt-25.12/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
