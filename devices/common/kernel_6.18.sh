@@ -39,6 +39,11 @@ wget -N https://raw.githubusercontent.com/graysky2/packages/c55afaa2bebca50a0e01
 
 cd ../../
 
+cd feeds/miaogongzi
+rm -rf fibocom_QMI_WWAN rkp-ipid
+cd ../../
+
+
 
 cd package
 rm -rf devel/kselftests-bpf  libs/libnl/Makefile 
