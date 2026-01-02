@@ -16,8 +16,7 @@ cd -
 
 #nat46: fix reproducible-build failure and use latest git
 wget -N https://github.com/graysky2/openwrt/commit/e52d04b65d1942f581533cb2054e74f4ff5bd70b.patch -P devices/common/patches/
-#wget -N https://github.com/immortalwrt/immortalwrt/raw/refs/heads/openwrt-25.12/package/kernel/linux/modules/video.mk -P package/kernel/linux/modules/
-#wget -N https://github.com/mgz0227/openwrt/commit/0495522cb43f1c23f7f8f1365b5a2d6ff0d4305e.patch -P devices/common/patches/
+
 
 cd feeds/packages
 rm -rf libs/libpfring/patches/* libs/libmariadb
@@ -40,16 +39,7 @@ git_clone_path master https://github.com/openwrt/packages net/jool kernel/v4l2lo
 git_clone_path 6.18-xt-addons https://github.com/graysky2/packages net/xtables-addons
 wget -N https://raw.githubusercontent.com/graysky2/packages/c55afaa2bebca50a0e019a249c2748e7d7f745b7/kernel/ovpn-dco/Makefile -P kernel/ovpn-dco/
 
-
 cd ../../
-
-#cd feeds/routing
-#rm -rf batman-adv
-#cd ../../
-
-#cd feeds/miaogongzi
-#rm -rf fibocom_QMI_WWAN
-#cd ../../
 
 
 cd package
@@ -61,10 +51,5 @@ mv kernel/mt76/patches/1026.patch kernel/mt76/patches/002-fix-mt76-timer-compat.
 
 wget -N https://raw.githubusercontent.com/graysky2/openwrt/061613c6ec0353d2ca70f8e15d47c1a6ed70f501/package/libs/libnl/Makefile -P libs/libnl/ 
 
-#devel/perf kernel/mt76
 cd ../
 
-
-#sed -i -E 's/^CONFIG_PACKAGE_kmod-(mac80211|cfg80211)=m$/# & is not set/' .config
-#sed -i -E 's/^CONFIG_PACKAGE_kmod-(ath9k|ath9k-common|ath5k|iwlwifi|mt76.*)=m$/# & is not set/' .config
-#sed -i -E 's/^CONFIG_PACKAGE_(MAC80211|CFG80211)_.+=y$/# & is not set/' .config
