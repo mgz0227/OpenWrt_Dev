@@ -41,7 +41,8 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/rtl8812au-ct
+rm -rf devel/kselftests-bpf  libs/libnl/Makefile 
+#kernel/rtl8812au-ct
 #kernel/ath10k-ct 
 
 
