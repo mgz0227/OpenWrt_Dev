@@ -41,8 +41,9 @@ cd ../../
 
 
 cd package
-rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/rtl8812au-ct kernel/ath10k-ct 
-#kernel/mt76
+rm -rf devel/kselftests-bpf  libs/libnl/Makefile kernel/rtl8812au-ct
+#kernel/ath10k-ct 
+
 
 wget -N https://patch-diff.githubusercontent.com/raw/openwrt/mt76/pull/1026.patch -P kernel/mt76/patches/
 mv kernel/mt76/patches/1026.patch kernel/mt76/patches/002-fix-mt76-timer-compat.patch
