@@ -44,20 +44,21 @@
  			{
  				memset(pos, 0x0, sizeof(pos));
 -				strncpy(pos, begin, p - begin);
-+				memcpy(pos, begin, min_t(size_t, p - begin, sizeof(pos) - 1));
++				memcpy(pos, begin, clamp_t(long, p - begin, 0, sizeof(pos) - 1));
  				k_sscanf(pos, "%d:%x", &index, &value);
  				begin = p + 1;
  				node->pos_info[node->pos_num].pos = index;
-@@ -781,7 +782,7 @@
+@@ -781,7 +782,8 @@
  		}
  
++		memset(pos, 0, sizeof(pos));
  		if (begin != dict)
 -			strncpy(pos, begin, p - begin);
-+			memcpy(pos, begin, min_t(size_t, p - begin, sizeof(pos) - 1));
++			memcpy(pos, begin, clamp_t(long, p - begin, 0, sizeof(pos) - 1));
  		else
  			strcpy(pos, dict);
  
-@@ -874,7 +875,7 @@
+@@ -874,7 +876,7 @@
  		if (*p != '|')
  			continue;
  		memset(one_port_buf, 0x0, sizeof(one_port_buf));
@@ -66,7 +67,7 @@
  		if (0 == parse_range_value(one_port_buf, &info->range_list[info->num]))
  		{
  			info->num++;
-@@ -883,7 +884,7 @@
+@@ -883,7 +885,7 @@
  		begin = p + 1;
  	}
  	memset(one_port_buf, 0x0, sizeof(one_port_buf));
@@ -75,7 +76,7 @@
  	if (0 == parse_range_value(one_port_buf, &info->range_list[info->num]))
  	{
  		info->num++;
-@@ -967,30 +968,30 @@
+@@ -967,30 +969,30 @@
  		{
  
  		case AF_PROTO_PARAM_INDEX:
@@ -114,7 +115,7 @@
  			ignore = k_atoi(tmp_buf);
  			break;
  		}
-@@ -1001,11 +1002,11 @@
+@@ -1001,11 +1003,11 @@
  
  
  	if (param_num == AF_DICT_PARAM_INDEX){
@@ -128,7 +129,7 @@
  		ignore = k_atoi(tmp_buf);
  	}
  
-@@ -1083,7 +1084,7 @@
+@@ -1083,7 +1085,7 @@
  		return -1;
  
  	*app_id = (int)id;
@@ -137,7 +138,7 @@
  	app_name[app_name_len - 1] = '\0';
  	return 0;
  }
-@@ -1124,8 +1125,8 @@
+@@ -1124,8 +1126,8 @@
  		}
  	}
  
@@ -148,7 +149,7 @@
  	p = feature_buf;
  	begin = feature_buf;
  
-@@ -1233,7 +1234,7 @@
+@@ -1233,7 +1235,7 @@
  		printk("warn, feature data len = %d\n", len);
  		return;
  	}
@@ -157,7 +158,7 @@
  	AF_INFO("add feature %s\n", feature);
  	af_init_feature(feature);
  }
-@@ -1646,9 +1647,9 @@
+@@ -1646,9 +1648,9 @@
  	{
  		memset(reg_url_buf, 0x0, sizeof(reg_url_buf));
  		if (flow->http.url_len >= MAX_URL_MATCH_LEN)
@@ -169,7 +170,7 @@
  		if (strlen(reg_url_buf) > 0 && strlen(node->request_url) && regexp_match(node->request_url, reg_url_buf))
  		{
  			AF_DEBUG("match request:%s   reg:%s appid=%d\n",
-@@ -1756,7 +1757,7 @@
+@@ -1756,7 +1758,7 @@
  
  		flow->app_id = node->app_id;
  		flow->feature = node;
@@ -178,7 +179,7 @@
  		feature_list_read_unlock();
  		return AF_TRUE;
  	}
-@@ -1766,7 +1767,7 @@
+@@ -1766,7 +1768,7 @@
  		AF_LMT_INFO("match dns regex feature, appid=%d, feature = %s\n", node->app_id, node->feature);
  		flow->app_id = node->app_id;
  		flow->feature = node;
@@ -187,7 +188,7 @@
  		feature_list_read_unlock();
  		return AF_TRUE;
  	}
-@@ -1776,7 +1777,7 @@
+@@ -1776,7 +1778,7 @@
  		AF_LMT_DEBUG("match feature, appid=%d, feature = %s\n", node->app_id, node->feature);
  		flow->app_id = node->app_id;
  		flow->feature = node;
@@ -196,7 +197,7 @@
  		feature_list_read_unlock();
  		return AF_TRUE;
  	}
-@@ -3146,7 +3147,7 @@
+@@ -3146,7 +3148,7 @@
  		new_node = kzalloc(sizeof(active_host_node_t), GFP_ATOMIC);
  		if (new_node) {
  			INIT_LIST_HEAD(&new_node->list);
