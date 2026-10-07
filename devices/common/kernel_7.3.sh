@@ -3,10 +3,11 @@
 shopt -s extglob
 
 git clone --depth 1 --single-branch --branch kernel-7.3 https://github.com/graysky2/openwrt new || exit 1
-rm -rf target/linux target/Config.in scripts/target-metadata.pl package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain || exit 1
+rm -rf include target/linux target/Config.in scripts/target-metadata.pl package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain || exit 1
 cd new || exit 1
 
-cp -rf --parents target/linux target/Config.in scripts/target-metadata.pl package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain config ../ || exit 1
+cp -rf --parents include target/linux target/Config.in scripts/target-metadata.pl package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain config ../ || exit 1
+
 
 cd - || exit 1
 
