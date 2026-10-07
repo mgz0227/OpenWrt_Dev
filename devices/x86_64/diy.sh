@@ -8,14 +8,22 @@ bash $SHELL_FOLDER/../common/kernel_6.18.sh
 
 wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
 
-
+#apk提示模块输出
+rm -rf package/base-files/files/etc/profile.d/apk-cheatsheet.sh
 #内核升级模块
 #开始
+#6.48.55
+rm -rf target/linux/generic/backport-6.18/707-v7.3-net-phylink-record-the-PHY-only-once-bringup-cannot-.patch
 
-rm -rf target/linux/generic/backport-6.12/510-v6.18-ksmbd-fix-recursive-locking-in-RPC-handle-list-access.patch
+
+#target/linux/generic
+#git_clone_path 18 https://github.com/graysky2/openwrt target/linux/generic target/linux/generic
+
+
 #以下不能动
-wget -N https://raw.githubusercontent.com/mgz0227/openwrt/refs/heads/6.18.y/target/linux/generic/kernel-6.18 -P include/
+
 wget -N https://raw.githubusercontent.com/mgz0227/openwrt/refs/heads/6.18.y/target/linux/generic/kernel-6.18 -P target/linux/generic/
+
 #结束
 
 #sed -i 's/kmod-r8169/kmod-r8168/' target/linux/x86/image/64.mk
