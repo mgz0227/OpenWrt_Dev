@@ -8,7 +8,7 @@ test_root=$(mktemp -d "${TMPDIR:-/tmp}/kernel-7.3-test.XXXXXX")
 trap 'rm -rf -- "$test_root"' EXIT
 export fixture="$test_root/source"
 
-dirs=(target/linux package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain config)
+dirs=(include target/linux package/boot package/devel package/firmware package/kernel package/libs package/network tools toolchain config)
 files=(target/Config.in scripts/target-metadata.pl)
 for path in "${dirs[@]}"; do
     mkdir -p "$fixture/$path" "$test_root/work/$path"

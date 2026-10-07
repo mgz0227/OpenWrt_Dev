@@ -1,23 +1,6 @@
 --- a/include/image.mk
 +++ b/include/image.mk
-@@ -717,7 +717,7 @@ define Device/Build/kernel
- endef
- 
- define Device/Build/image
--  GZ_SUFFIX := $(if $(filter %dtb %gz,$(2)),,$(if $(and $(findstring ext4,$(1)),$(CONFIG_TARGET_IMAGES_GZIP)),.gz))
-+  GZ_SUFFIX := $(if $(filter %dtb %gz,$(2)),,$(if $(and $(findstring ext4,$(1)),$(findstring img,$(2)),$(CONFIG_TARGET_IMAGES_GZIP)),.gz))
-   $$(_TARGET): $(if $(CONFIG_JSON_OVERVIEW_IMAGE_INFO), \
- 	  $(BUILD_DIR)/json_info_files/$(call DEVICE_IMG_NAME,$(1),$(2)).json, \
- 	  $(BIN_DIR)/$(call DEVICE_IMG_NAME,$(1),$(2))$$(GZ_SUFFIX))
-@@ -755,6 +755,7 @@ define Device/Build/image
- 	FILE_TYPE=$(word 1,$(subst ., ,$(2))) \
- 	FILE_FILESYSTEM="$(1)" \
- 	DEVICE_IMG_PREFIX="$(DEVICE_IMG_PREFIX)" \
-+	IMAGE_SIZE="$(shell echo $$(($(call exp_units,$(IMAGE_SIZE)))))" \
- 	DEVICE_VENDOR="$(DEVICE_VENDOR)" \
- 	DEVICE_MODEL="$(DEVICE_MODEL)" \
- 	DEVICE_VARIANT="$(DEVICE_VARIANT)" \
-@@ -861,6 +862,7 @@ define Device/DumpInfo
+@@ -886,6 +886,7 @@ define Device/DumpInfo
  Target-Profile: DEVICE_$(1)
  Target-Profile-Name: $(DEVICE_DISPLAY)
  Target-Profile-Packages: $(DEVICE_PACKAGES)
@@ -32,7 +15,7 @@
              "device_packages": getenv("DEVICE_PACKAGES").split(),
              "supported_devices": getenv("SUPPORTED_DEVICES").split(),
              "titles": get_titles(),
-+            "image_size": getenv("IMAGE_SIZE"),
++            "image_size": str(get_numerical_size(getenv("IMAGE_SIZE") or "0")),
          }
      },
  }
