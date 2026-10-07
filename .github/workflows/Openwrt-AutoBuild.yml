@@ -263,6 +263,15 @@ jobs:
         mixkey: ${{ matrix.target }}
         clean: ${{ contains(github.event.action, 'nocache') }}
         prefix: ${{ github.workspace }}/openwrt
+
+    - name: Restore compiler cache
+      if: ${{ ! contains(github.event.action, 'nocache') }}
+      uses: actions/cache/restore@v4
+      continue-on-error: true
+      with:
+        path: openwrt/.ccache
+        key: ${{ runner.os }}-openwrt-ccache-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+        restore-keys: ${{ runner.os }}-openwrt-ccache-${{ matrix.target }}-
     
     - name: Check space usage
       run: |
@@ -281,8 +290,8 @@ jobs:
         shopt -s extglob
         cd openwrt
         echo -e "$(($(nproc)+1)) thread compile"
-        make -j$(($(nproc)+1)) BUILD_LOG=1 2>&1 | tee error0.log || make -j1 V=sc >error1.log 2>&1 || {
-          grep -nE -C 5 '(fatal )?error:|undefined reference|No rule to make target|ERROR:|\*\*\*.*Error' error1.log || true
+        make -k -j$(($(nproc)+1)) BUILD_LOG=1 2>&1 | tee error0.log || make -j1 V=sc >error1.log 2>&1 || {
+          grep -nE -C 5 '(fatal )?error:|undefined reference|No rule to make target|^[[:space:]]*ERROR:|\*\*\*.*Error' error1.log || true
           tail -50 error1.log
           if [[ -n "$TELEGRAM_TOKEN" && -n "$TELEGRAM_CHAT_ID" ]] && ${{ ! contains(github.event.action, 'notg') }}; then
             curl -k --data chat_id="$TELEGRAM_CHAT_ID" --data "text=❌ OpenWrt $VERSION ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" || true
@@ -305,6 +314,14 @@ jobs:
           openwrt/logs/
         if-no-files-found: ignore
         retention-days: 7
+
+    - name: Save compiler cache
+      if: always() && !cancelled() && ! contains(github.event.action, 'nocache') && (steps.compile.outcome == 'success' || steps.compile.outcome == 'failure')
+      uses: actions/cache/save@v4
+      continue-on-error: true
+      with:
+        path: openwrt/.ccache
+        key: ${{ runner.os }}-openwrt-ccache-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
 
     
 
