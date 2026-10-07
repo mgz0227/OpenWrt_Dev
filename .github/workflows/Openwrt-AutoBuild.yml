@@ -277,15 +277,34 @@ jobs:
     - name: Compile the firmware
       id: compile
       run: |
+        set -o pipefail
         shopt -s extglob
         cd openwrt
         echo -e "$(($(nproc)+1)) thread compile"
-        make -j$(($(nproc)+1)) || make V=sc &>error1.log || (tail -50 error1.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
-        #make -j1 V=sc || make V=sc &>build.log || (tail -50 build.log; curl -k --data chat_id="${{ env.TELEGRAM_CHAT_ID }}" --data "text=❌ OpenWrt ${{ env.VERSION }} ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage";df -hT;exit 1)
+        make -j$(($(nproc)+1)) BUILD_LOG=1 2>&1 | tee error0.log || make -j1 V=sc >error1.log 2>&1 || {
+          grep -nE -C 5 '(fatal )?error:|undefined reference|No rule to make target|ERROR:|\*\*\*.*Error' error1.log || true
+          tail -50 error1.log
+          if [[ -n "$TELEGRAM_TOKEN" && -n "$TELEGRAM_CHAT_ID" ]] && ${{ ! contains(github.event.action, 'notg') }}; then
+            curl -k --data chat_id="$TELEGRAM_CHAT_ID" --data "text=❌ OpenWrt $VERSION ${{matrix.target}} 编译失败 😂" "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" || true
+          fi
+          df -hT
+          exit 1
+        }
         sed -i "s/# CONFIG_IB is not set/CONFIG_IB=y/" .config
         rm -rf staging_dir/toolchain-*/bin/*openwrt-linux-musl-lto-dump
         rm -rf staging_dir/toolchain-*/initial
         df -hT
+
+    - name: Upload build logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-logs-${{ matrix.target }}-${{ github.run_attempt }}
+        path: |
+          openwrt/error*.log
+          openwrt/logs/
+        if-no-files-found: ignore
+        retention-days: 7
 
     
 
@@ -366,7 +385,7 @@ jobs:
 
     - name: Create release
       id: create_release
-      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true'
+      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && ! contains(github.event.action, 'norelease')
       continue-on-error: true
       run: |
         echo -e "墙内加速下载 🚀:\n" >> release.txt
@@ -378,7 +397,7 @@ jobs:
     - name: Upload firmware for release
       uses: softprops/action-gh-release@master
       continue-on-error: true
-      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true'
+      if: env.REPO_TOKEN && env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && ! contains(github.event.action, 'norelease')
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_MGZ0227 }}
       with:
@@ -404,6 +423,7 @@ jobs:
     - name: Delete workflow runs
       uses: mgz0227/delete-workflow-runs@main
       continue-on-error: true
+      if: ${{ ! contains(github.event.action, 'norelease') }}
       with:
         token: ${{ secrets.TOKEN_MGZ0227 }}
         retain_days: 100
@@ -412,7 +432,7 @@ jobs:
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@master
       continue-on-error: true
-      if: env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && !cancelled()
+      if: env.UPLOAD_FIRMWARE_FOR_RELEASE == 'true' && !cancelled() && ! contains(github.event.action, 'norelease')
       with:
         keep_latest: 15
         delete_tags: true

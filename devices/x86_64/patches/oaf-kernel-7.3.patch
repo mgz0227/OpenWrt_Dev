@@ -1,0 +1,251 @@
+--- a/feeds/miaogongzi/oaf/src/fwx_main.c
++++ b/feeds/miaogongzi/oaf/src/fwx_main.c
+@@ -31,6 +31,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/proc_fs.h>
+ #include <linux/ctype.h>
++#include <linux/string.h>
+ #include "fwx.h"
+ #include "fwx_utils.h"
+ #include "fwx_log.h"
+@@ -292,10 +293,10 @@
+ 
+ 	if (flow->https.match == AF_TRUE && flow->https.url_pos && flow->https.url_len > 0) {
+ 		copy_len = flow->https.url_len >= (host_buf_len - 1) ? (host_buf_len - 1) : flow->https.url_len;
+-		strncpy(host_buf, flow->https.url_pos, copy_len);
++		memcpy(host_buf, flow->https.url_pos, copy_len);
+ 	} else if (flow->http.match == AF_TRUE && flow->http.host_pos && flow->http.host_len > 0) {
+ 		copy_len = flow->http.host_len >= (host_buf_len - 1) ? (host_buf_len - 1) : flow->http.host_len;
+-		strncpy(host_buf, flow->http.host_pos, copy_len);
++		memcpy(host_buf, flow->http.host_pos, copy_len);
+ 	} else {
+ 		return -1;
+ 	}
+@@ -324,7 +325,7 @@
+ 
+ 	copy_len = strlen(flow->dns.domain[index]);
+ 	copy_len = copy_len >= (host_buf_len - 1) ? (host_buf_len - 1) : copy_len;
+-	strncpy(host_buf, flow->dns.domain[index], copy_len);
++	memcpy(host_buf, flow->dns.domain[index], copy_len);
+ 	host_buf[copy_len] = '\0';
+ 	if (host_len) {
+ 		*host_len = copy_len;
+@@ -748,7 +749,7 @@
+ 	else
+ 	{
+ 		node->app_id = appid;
+-		strncpy(node->app_name, name, sizeof(node->app_name) - 1);
++		strscpy_pad(node->app_name, name, sizeof(node->app_name));
+ 		node->proto = proto;
+ 		node->dport_info = dport_info;
+ 		node->sport = src_port;
+@@ -769,7 +770,7 @@
+ 			if (*p == '|')
+ 			{
+ 				memset(pos, 0x0, sizeof(pos));
+-				strncpy(pos, begin, p - begin);
++				memcpy(pos, begin, min_t(size_t, p - begin, sizeof(pos) - 1));
+ 				k_sscanf(pos, "%d:%x", &index, &value);
+ 				begin = p + 1;
+ 				node->pos_info[node->pos_num].pos = index;
+@@ -781,7 +782,7 @@
+ 		}
+ 
+ 		if (begin != dict)
+-			strncpy(pos, begin, p - begin);
++			memcpy(pos, begin, min_t(size_t, p - begin, sizeof(pos) - 1));
+ 		else
+ 			strcpy(pos, dict);
+ 
+@@ -874,7 +875,7 @@
+ 		if (*p != '|')
+ 			continue;
+ 		memset(one_port_buf, 0x0, sizeof(one_port_buf));
+-		strncpy(one_port_buf, begin, p - begin);
++		memcpy(one_port_buf, begin, min_t(size_t, p - begin, sizeof(one_port_buf) - 1));
+ 		if (0 == parse_range_value(one_port_buf, &info->range_list[info->num]))
+ 		{
+ 			info->num++;
+@@ -883,7 +884,7 @@
+ 		begin = p + 1;
+ 	}
+ 	memset(one_port_buf, 0x0, sizeof(one_port_buf));
+-	strncpy(one_port_buf, begin, p - begin);
++	memcpy(one_port_buf, begin, min_t(size_t, p - begin, sizeof(one_port_buf) - 1));
+ 	if (0 == parse_range_value(one_port_buf, &info->range_list[info->num]))
+ 	{
+ 		info->num++;
+@@ -967,30 +968,30 @@
+ 		{
+ 
+ 		case AF_PROTO_PARAM_INDEX:
+-			strncpy(proto_str, begin, p - begin);
++			memcpy(proto_str, begin, min_t(size_t, p - begin, sizeof(proto_str) - 1));
+ 			break;
+ 		case AF_SRC_PORT_PARAM_INDEX:
+-			strncpy(src_port_str, begin, p - begin);
++			memcpy(src_port_str, begin, min_t(size_t, p - begin, sizeof(src_port_str) - 1));
+ 			break;
+ 		case AF_DST_PORT_PARAM_INDEX:
+-			strncpy(dst_port_str, begin, p - begin);
++			memcpy(dst_port_str, begin, min_t(size_t, p - begin, sizeof(dst_port_str) - 1));
+ 			break;
+ 
+ 		case AF_HOST_URL_PARAM_INDEX:
+-			strncpy(host_url, begin, p - begin);
++			memcpy(host_url, begin, min_t(size_t, p - begin, sizeof(host_url) - 1));
+ 			break;
+ 
+ 		case AF_REQUEST_URL_PARAM_INDEX:
+-			strncpy(request_url, begin, p - begin);
++			memcpy(request_url, begin, min_t(size_t, p - begin, sizeof(request_url) - 1));
+ 			break;
+ 		case AF_DICT_PARAM_INDEX:
+-			strncpy(dict, begin, p - begin);
++			memcpy(dict, begin, min_t(size_t, p - begin, sizeof(dict) - 1));
+ 			break;
+ 		case AF_STR_PARAM_INDEX:
+-			strncpy(search_str, begin, p - begin);
++			memcpy(search_str, begin, min_t(size_t, p - begin, sizeof(search_str) - 1));
+ 			break;
+ 		case AF_IGNORE_PARAM_INDEX:
+-			strncpy(tmp_buf, begin, p - begin);
++			memcpy(tmp_buf, begin, min_t(size_t, p - begin, sizeof(tmp_buf) - 1));
+ 			ignore = k_atoi(tmp_buf);
+ 			break;
+ 		}
+@@ -1001,11 +1002,11 @@
+ 
+ 
+ 	if (param_num == AF_DICT_PARAM_INDEX){
+-		strncpy(dict, begin, p - begin);
++		memcpy(dict, begin, min_t(size_t, p - begin, sizeof(dict) - 1));
+ 	}
+ 
+ 	if (param_num == AF_IGNORE_PARAM_INDEX){
+-		strncpy(tmp_buf, begin, p - begin);
++		memcpy(tmp_buf, begin, min_t(size_t, p - begin, sizeof(tmp_buf) - 1));
+ 		ignore = k_atoi(tmp_buf);
+ 	}
+ 
+@@ -1083,7 +1084,7 @@
+ 		return -1;
+ 
+ 	*app_id = (int)id;
+-	strncpy(app_name, name_text, app_name_len - 1);
++	strscpy_pad(app_name, name_text, app_name_len);
+ 	app_name[app_name_len - 1] = '\0';
+ 	return 0;
+ }
+@@ -1124,8 +1125,8 @@
+ 		}
+ 	}
+ 
+-	if (pos && len)
+-		strncpy(feature_buf, pos, len);
++	if (pos && len > 0 && len < MAX_FEATURE_LINE_LEN)
++		memcpy(feature_buf, pos, len);
+ 	p = feature_buf;
+ 	begin = feature_buf;
+ 
+@@ -1233,7 +1234,7 @@
+ 		printk("warn, feature data len = %d\n", len);
+ 		return;
+ 	}
+-	strncpy(feature, data, len);
++	memcpy(feature, data, len);
+ 	AF_INFO("add feature %s\n", feature);
+ 	af_init_feature(feature);
+ }
+@@ -1646,9 +1647,9 @@
+ 	{
+ 		memset(reg_url_buf, 0x0, sizeof(reg_url_buf));
+ 		if (flow->http.url_len >= MAX_URL_MATCH_LEN)
+-			strncpy(reg_url_buf, flow->http.url_pos, MAX_URL_MATCH_LEN - 1);
++			memcpy(reg_url_buf, flow->http.url_pos, MAX_URL_MATCH_LEN - 1);
+ 		else
+-			strncpy(reg_url_buf, flow->http.url_pos, flow->http.url_len);
++			memcpy(reg_url_buf, flow->http.url_pos, flow->http.url_len);
+ 		if (strlen(reg_url_buf) > 0 && strlen(node->request_url) && regexp_match(node->request_url, reg_url_buf))
+ 		{
+ 			AF_DEBUG("match request:%s   reg:%s appid=%d\n",
+@@ -1756,7 +1757,7 @@
+ 
+ 		flow->app_id = node->app_id;
+ 		flow->feature = node;
+-		strncpy(flow->app_name, node->app_name, sizeof(flow->app_name) - 1);
++		strscpy_pad(flow->app_name, node->app_name, sizeof(flow->app_name));
+ 		feature_list_read_unlock();
+ 		return AF_TRUE;
+ 	}
+@@ -1766,7 +1767,7 @@
+ 		AF_LMT_INFO("match dns regex feature, appid=%d, feature = %s\n", node->app_id, node->feature);
+ 		flow->app_id = node->app_id;
+ 		flow->feature = node;
+-		strncpy(flow->app_name, node->app_name, sizeof(flow->app_name) - 1);
++		strscpy_pad(flow->app_name, node->app_name, sizeof(flow->app_name));
+ 		feature_list_read_unlock();
+ 		return AF_TRUE;
+ 	}
+@@ -1776,7 +1777,7 @@
+ 		AF_LMT_DEBUG("match feature, appid=%d, feature = %s\n", node->app_id, node->feature);
+ 		flow->app_id = node->app_id;
+ 		flow->feature = node;
+-		strncpy(flow->app_name, node->app_name, sizeof(flow->app_name) - 1);
++		strscpy_pad(flow->app_name, node->app_name, sizeof(flow->app_name));
+ 		feature_list_read_unlock();
+ 		return AF_TRUE;
+ 	}
+@@ -3146,7 +3147,7 @@
+ 		new_node = kzalloc(sizeof(active_host_node_t), GFP_ATOMIC);
+ 		if (new_node) {
+ 			INIT_LIST_HEAD(&new_node->list);
+-			strncpy(new_node->host, host_buf, 63);
++			strscpy_pad(new_node->host, host_buf, sizeof(new_node->host));
+ 			new_node->host[63] = '\0';
+ 			memcpy(new_node->mac, client->mac, MAC_ADDR_LEN);
+ 			new_node->src_ip = flow->src;
+--- a/feeds/miaogongzi/oaf/src/fwx_utils.c
++++ b/feeds/miaogongzi/oaf/src/fwx_utils.c
+@@ -82,7 +82,7 @@
+ 	if ((s != start) || (bk != last))
+ 	{
+ 		len = last - start + 1;
+-		strncpy(s, start, len);
++		memmove(s, start, len);
+ 		s[len] = '\0';
+ 	}
+ 	return s;
+@@ -103,11 +103,9 @@
+ void dump_str(char *name, unsigned char *p, int len)
+ {
+ 	char buf[MAX_DUMP_STR_LEN] = {0};
+-	if (len > MAX_DUMP_STR_LEN) {
+-		len = MAX_DUMP_STR_LEN - 1;
+-	}
++	len = clamp_t(int, len, 0, MAX_DUMP_STR_LEN - 1);
+ 	printk("%s: ",name);
+-	strncpy(buf, p, len);
++	memcpy(buf, p, len);
+ 	printk("[%s]\n", buf);
+ }
+ int isprint_char(unsigned char c)
+--- a/feeds/miaogongzi/oaf/src/fwx_client_fs.c
++++ b/feeds/miaogongzi/oaf/src/fwx_client_fs.c
+@@ -23,6 +23,7 @@
+ #include <linux/proc_fs.h>
+ #include <linux/sysctl.h>
+ #include <linux/mutex.h>
++#include <linux/string.h>
+ #include "fwx_utils.h"
+ 
+ #include "k_json.h"
+@@ -211,7 +212,7 @@
+ 		visiting_app = node->visiting.visiting_app;
+ 	}
+ 	if ( af_get_timestamp_sec()  - node->visiting.url_time < 120 ){
+-		strncpy(visiting_url, node->visiting.visiting_url, sizeof(visiting_url));
++		strscpy_pad(visiting_url, node->visiting.visiting_url, sizeof(visiting_url));
+ 	}
+ 	else{
+ 		strcpy(visiting_url, "none");
