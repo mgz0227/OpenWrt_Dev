@@ -1,0 +1,41 @@
+--- /dev/null
++++ b/feeds/packages/kernel/macremapper/patches/03-kernel-7.3-string-copy.patch
+@@ -0,0 +1,38 @@
++Subject: [PATCH] macremapper: preserve fixed-width names without strncpy
++
++Linux removed strncpy. Filter names are 24-byte ABI fields and may
++use the full width without a terminating NUL. Keep all name bytes and
++zero padding with a bounded source length.
++
++--- a/kernelmod/mrm_rcdb.c
+++++ b/kernelmod/mrm_rcdb.c
++@@ -175,7 +175,8 @@
++   /* initialize it */
++   memset(rv, 0, sizeof(*rv));
++   INIT_LIST_HEAD(&rv->list);
++-  strncpy(rv->conf.name, name, sizeof(rv->conf.name));
+++  memcpy_and_pad(rv->conf.name, sizeof(rv->conf.name), name,
+++                 strnlen(name, sizeof(rv->conf.name)), 0);
++ 
++   /* add it to the list */
++   list_add_rcu(&rv->list, &_filter_list);
++--- a/kernelmod/mrm_runconf.c
+++++ b/kernelmod/mrm_runconf.c
++@@ -16,6 +16,7 @@
++ #include <linux/ipv6.h>
++ #include <linux/udp.h>
++ #include <linux/tcp.h>
+++#include <linux/string.h>
++ 
++ 
++ 
++@@ -276,7 +277,8 @@
++   r = mrm_rcdb_lookup_remap_entry_by_macaddr(e->match_macaddr);
++   if (r == NULL) return -EINVAL; /* remap entry not found */
++ 
++-  strncpy(e->filter_name, r->filter->conf.name, sizeof(e->filter_name));
+++  memcpy_and_pad(e->filter_name, sizeof(e->filter_name), r->filter->conf.name,
+++                 strnlen(r->filter->conf.name, sizeof(e->filter_name)), 0);
++ 
++   for (i = 0; i < r-> replace_count; ++i) {
++     memcpy(e->replace[i].macaddr, r->replace[i].macaddr, sizeof(r->replace[i].macaddr));

@@ -1,0 +1,31 @@
+--- /dev/null
++++ b/feeds/miaogongzi/xt-tls/patches/900-kernel-7.3-string-copy.patch
+@@ -0,0 +1,28 @@
++Subject: [PATCH] xt_tls: copy the complete bounded TLS hostname
++
++Linux removed strncpy. The SNI hostname is length-delimited, with
++its terminating NUL written separately. Validate the source span and
++allocation before copying its bytes.
++
++--- a/src/xt_tls_main.c
+++++ b/src/xt_tls_main.c
++@@ -220,9 +220,18 @@
++ 					printk("[xt_tls] Name type: %d\n", name_type);
++ 					printk("[xt_tls] Name length: %d\n", name_length);
++ #endif
+++					if (offset > data_len || extension_offset > data_len - offset ||
+++					    name_length > data_len - offset - extension_offset) {
+++						free_data_buf();
+++						return EPROTO;
+++					}
++ 					// Allocate an extra byte for the null-terminator
++ 					*dest = kmalloc(name_length + 1, GFP_KERNEL);
++-					strncpy(*dest, &data[offset + extension_offset], name_length);
+++					if (!*dest) {
+++						free_data_buf();
+++						return -ENOMEM;
+++					}
+++					memcpy(*dest, &data[offset + extension_offset], name_length);
++ 					// Make sure the string is always null-terminated.
++ 					(*dest)[name_length] = 0;
++ 
