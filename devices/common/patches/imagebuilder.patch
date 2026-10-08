@@ -123,6 +123,12 @@
 +REMOVED_PACKAGES:=$(sort $(PROFILE_REMOVED_PACKAGES) \
 +	$(patsubst -%,%,$(filter -%,$(BUILD_PACKAGES))))
  BUILD_PACKAGES:=$(filter-out $(filter -%,$(BUILD_PACKAGES)) $(patsubst -%,%,$(filter -%,$(BUILD_PACKAGES))),$(BUILD_PACKAGES))
+@@ -158,4 +202,4 @@ endif
+ # 1: package name
+ define GetABISuffix
+-$(shell $(APK) query --fields tags --match provides $(1) | grep openwrt:abiversion | awk -F= '{print $$2; exit}')
++$(shell $(APK) query --fields tags --match provides $(1) | tr ' ' '\n' | grep '^openwrt:abiversion=' | cut -d= -f2 | head -n 1)
+ endef
 @@ -184,7 +228,10 @@ _call_image: staging_dir/host/.prereq-build
  	$(MAKE) -s prepare_rootfs
  	$(MAKE) -s build_image

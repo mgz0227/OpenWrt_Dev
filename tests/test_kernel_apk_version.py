@@ -90,3 +90,26 @@ all:;
         assert values["release"] == release and values["raw"].startswith(release + "~"), values
     print("PASS: old RC mismatch; full build and ImageBuilder pins match package/kmod metadata;")
     print("      RC6, RC10 and stable versions; raw kernel release preserved")
+
+    # APK 3 prints ABI, section and CPE tags on the same line. Exercise the
+    # actual ImageBuilder functions with both old and new package metadata.
+    ib_source = (root / "target/imagebuilder/files/Makefile").read_text()
+    definitions = "\n".join(capture(rf'^(define {name}\n[\s\S]*?^endef)', ib_source)
+                            for name in ("GetABISuffix", "FormatPackages"))
+    (root / "mock-apk.sh").write_text("cat tags.txt\n")
+    for tags, package, expected in [
+        ("Tags: openwrt:abiversion=4", "libcurl", "libcurl4"),
+        ("Tags: openwrt:abiversion=4 openwrt:section=libs openwrt:cpe=cpe:/a:haxx:libcurl",
+         "libcurl", "libcurl4"),
+        ("Tags: openwrt:section=libs openwrt:abiversion=4", "libcurl=8.22.0-r1", "libcurl4=8.22.0-r1"),
+        ("Tags: openwrt:section=libs\n  openwrt:abiversion=4", "libcurl", "libcurl4"),
+        ("Tags: openwrt:section=utils", "curl", "curl"),
+        ("Tags: openwrt:abiversion=4\nTags: openwrt:abiversion=5", "libcurl", "libcurl4"),
+    ]:
+        (root / "tags.txt").write_text(tags + "\n")
+        (root / "probe.mk").write_text("APK:=sh mock-apk.sh\n" + definitions +
+                                      f"\n$(info result=$(call FormatPackages,{package}))\nall:;\n")
+        result = subprocess.run([MAKE, "-s", "-f", "probe.mk"], cwd=root,
+                                text=True, capture_output=True, check=True)
+        assert result.stdout.strip() == "result=" + expected, result
+    print("PASS: ImageBuilder ABI extraction for old/new tags, wrapped lines and version pins")
