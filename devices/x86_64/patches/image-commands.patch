@@ -9,7 +9,7 @@
 +		name="$(subst .vmdk.zip,,$@)"; \
 +		qemu-img convert -f raw -O $1 $@ $$name.vmdk; \
 +		rm -f $@; \
-+		zip -jm $@ $$name*.vmdk; \
++		zip -jm "$@" "$$name.vmdk" "$$name-flat.vmdk"; \
 +	else \
 +		echo "WARNING: Install qemu-img to create VDI/VMDK images" >&2; exit 1; \
 +	fi
