@@ -1,0 +1,29 @@
+Subject: [PATCH] normalize rc kernel versions when installing APK packages
+
+The kernel package and kmod dependencies use APK's _rc suffix, while
+kernel.version retains the actual -rc kernel release. Normalize the two
+APK install consumers in the mixed 25.12/kernel-7.3 tree to match the
+package metadata without changing kernel release names or module paths.
+
+--- a/package/Makefile
++++ b/package/Makefile
+@@ -105,7 +105,7 @@ $(curdir)/install: $(TMP_DIR)/.build $(curdir)/merge $(curdir)/merge-index
+ 		$$(cat $(TMP_DIR)/apk_install_list) \
+ 			"base-files=$(shell cat $(STAGING_DIR)/base-files.version)" \
+ 			"libc=$(shell cat $(STAGING_DIR)/libc.version)" \
+-			"kernel=$(shell cat $(STAGING_DIR)/kernel.version)"
++			"kernel=$(subst -rc,_rc,$(shell cat $(STAGING_DIR)/kernel.version))"
+ 
+ 	rm -rf $(TARGET_DIR)/run
+ else
+--- a/target/imagebuilder/files/Makefile
++++ b/target/imagebuilder/files/Makefile
+@@ -194,7 +194,7 @@ ifneq ($(CONFIG_USE_APK),)
+ BUILD_PACKAGES+= \
+   "base-files=$(BASE_FILES_VERSION)" \
+   "libc=$(LIBC_VERSION)" \
+-  "kernel=$(KERNEL_VERSION)"
++  "kernel=$(subst -rc,_rc,$(KERNEL_VERSION))"
+ endif
+ 
+ # Get ABI version suffix for a package from an apk index
