@@ -1,0 +1,8 @@
+--- a/include/kernel-defaults.mk
++++ b/include/kernel-defaults.mk
+@@ -128,4 +128,4 @@ define Kernel/Configure/Default
+-	grep '=[ym]' $(LINUX_DIR)/.config.set | LC_ALL=C sort | $(MKHASH) md5 > $(LINUX_DIR)/.vermagic
++	echo '1' > $(LINUX_DIR)/.vermagic
+ endef
+ 
+ define Kernel/Configure/Initramfs
