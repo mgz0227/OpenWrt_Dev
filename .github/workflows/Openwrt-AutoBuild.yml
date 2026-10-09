@@ -220,6 +220,21 @@ jobs:
         CONFIG_FAT_DEFAULT_IOCHARSET="utf8" \
         ' `find target/linux -path "target/linux/*/config-*"`
 
+    - name: Write custom APK keys
+      run: |
+        cd openwrt
+
+        cat > private-key.pem <<'EOF'
+        ${{ secrets.APK_PRIVATE_KEY }}
+        EOF
+
+        cat > public-key.pem <<'EOF'
+        ${{ secrets.APK_PUBLIC_KEY }}
+        EOF
+
+        chmod 600 private-key.pem
+        ls -l private-key.pem public-key.pem
+
     - name: Defconfig
       run: |
         cd openwrt
@@ -236,7 +251,16 @@ jobs:
         fi
         cat .config
 
-        
+
+    - name: Check key files in TOPDIR
+      run: |
+        cd openwrt
+        pwd
+        ls -l private-key.pem public-key.pem
+        grep -E 'CONFIG_SIGNED_PACKAGES|CONFIG_PACKAGE_openwrt-keyring|CONFIG_SIGNATURE_CHECK' .config || true
+       
+
+
     - name: Get kernel version
       id: kernel
       run: |
