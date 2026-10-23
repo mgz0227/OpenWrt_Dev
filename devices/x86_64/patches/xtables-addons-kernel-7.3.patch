@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/feeds/packages/net/xtables-addons/patches/700-kernel-7.3-string-api.patch
-@@ -0,0 +1,120 @@
+@@ -0,0 +1,71 @@
 +Subject: [PATCH] replace removed kernel strncpy calls
 +
 +Use the kernel string API available with Linux 7.3 while preserving string
@@ -8,39 +8,9 @@
 +Validate userspace copy lengths before accessing the fixed-size fields.
 +Userspace calls continue to use libc unchanged.
 +
-+--- a/extensions/ACCOUNT/xt_ACCOUNT.c
-++++ b/extensions/ACCOUNT/xt_ACCOUNT.c
-+@@ -221,7 +221,8 @@
-+ 			int j;  /* needs to be signed, otherwise we risk endless loop */
-+ 
-+ 			pr_debug("ACCOUNT: Found free slot: %d\n", i);
-+-			strncpy(ipt_acc_tables[i].name, name, ACCOUNT_TABLE_NAME_LEN-1);
-++			memcpy_and_pad(ipt_acc_tables[i].name, ACCOUNT_TABLE_NAME_LEN - 1,
-++				       name, strnlen(name, ACCOUNT_TABLE_NAME_LEN - 1), 0);
-+ 
-+ 			ipt_acc_tables[i].ip = ip;
-+ 			ipt_acc_tables[i].netmask = netmask;
 +--- a/extensions/pknock/xt_pknock.c
 ++++ b/extensions/pknock/xt_pknock.c
-+@@ -17,6 +17,7 @@
-+ #include <linux/list.h>
-+ #include <linux/proc_fs.h>
-+ #include <linux/spinlock.h>
-++#include <linux/string.h>
-+ #include <linux/jhash.h>
-+ #include <linux/random.h>
-+ #include <linux/proc_fs.h>
-+@@ -457,7 +458,8 @@
-+ 		return false;
-+ 
-+ 	INIT_LIST_HEAD(&rule->head);
-+-	strncpy(rule->rule_name, info->rule_name, info->rule_name_len);
-++	memcpy_and_pad(rule->rule_name, info->rule_name_len, info->rule_name,
-++		       strnlen(info->rule_name, info->rule_name_len), 0);
-+ 	rule->rule_name_len = info->rule_name_len;
-+ 	rule->ref_count      = 1;
-+ 	rule->max_time       = info->max_time;
-+@@ -998,6 +1000,9 @@
++@@ -998,6 +998,9 @@
 + {
 + 	struct xt_pknock_mtinfo *info = par->matchinfo;
 + 
@@ -50,25 +20,6 @@
 + 	/* Singleton. */
 + 	if (rule_hashtable == NULL) {
 + 		rule_hashtable = alloc_hashtable(rule_hashsize);
-+--- a/extensions/xt_quota2.c
-++++ b/extensions/xt_quota2.c
-+@@ -18,6 +18,7 @@
-+ #include <linux/seq_file.h>
-+ #include <linux/skbuff.h>
-+ #include <linux/spinlock.h>
-++#include <linux/string.h>
-+ #include <linux/uidgid.h>
-+ #include <linux/version.h>
-+ #include <asm/atomic.h>
-+@@ -142,7 +143,7 @@
-+ 	if (!anon) {
-+ 		INIT_LIST_HEAD(&e->list);
-+ 		atomic_set(&e->ref, 1);
-+-		strncpy(e->name, q->name, sizeof(e->name));
-++		strscpy_pad(e->name, q->name, sizeof(e->name));
-+ 	}
-+ 	return e;
-+ }
 +--- a/extensions/LUA/xt_LUA_target.c
 ++++ b/extensions/LUA/xt_LUA_target.c
 +@@ -18,6 +18,7 @@
