@@ -1,0 +1,25 @@
+--- a/include/version.mk
++++ b/include/version.mk
+@@ -5,2 +5,6 @@
+ 
++# ===== MeowWrt additions: dynamic build date for distro name =====
++# Format: MM.DD.YYYY (e.g. 10.04.2025)
++BUILD_DATE := $(shell date +%m.%d.%Y)
++REVISION:=$(shell date +%Y%m%d)
+ # Substituted by SDK, do not remove
+@@ -31,4 +35,3 @@
+ 
+-VERSION_CODE:=$(call qstrip,$(CONFIG_VERSION_CODE))
+-VERSION_CODE:=$(if $(VERSION_CODE),$(VERSION_CODE),$(REVISION))
++VERSION_CODE:=$(REVISION)
+ 
+@@ -38,3 +41,3 @@
+ VERSION_DIST:=$(call qstrip,$(CONFIG_VERSION_DIST))
+-VERSION_DIST:=$(if $(VERSION_DIST),$(VERSION_DIST),OpenWrt)
++VERSION_DIST:=$(if $(VERSION_DIST),$(VERSION_DIST),MeowWrt)
+ VERSION_DIST_SANITIZED:=$(call sanitize,$(VERSION_DIST))
+@@ -42,3 +45,3 @@
+ VERSION_MANUFACTURER:=$(call qstrip,$(CONFIG_VERSION_MANUFACTURER))
+-VERSION_MANUFACTURER:=$(if $(VERSION_MANUFACTURER),$(VERSION_MANUFACTURER),OpenWrt)
++VERSION_MANUFACTURER:=$(if $(VERSION_MANUFACTURER),$(VERSION_MANUFACTURER),MeowWrt)
+ 
