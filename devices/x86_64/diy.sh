@@ -2,7 +2,7 @@
 
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
-bash $SHELL_FOLDER/../common/kernel_7.3.sh
+bash $SHELL_FOLDER/../common/kernel_7.4.sh
 
 # Normalize the upstream CRLF file before applying the OAF kernel patch.
 sed -i 's/\r$//' feeds/miaogongzi/oaf/src/fwx_utils.c || exit 1
