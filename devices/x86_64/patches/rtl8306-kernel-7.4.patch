@@ -1,0 +1,46 @@
+Subject: [PATCH] rtl8306: use match_phy_device for kernel 7.4
+
+The PHY fixup API is built in and no longer exported on kernel 7.4, so a
+modular rtl8306 driver cannot register a legacy fixup. Detect the switch
+through the driver's match callback instead.
+
+--- a/target/linux/generic/files/drivers/net/phy/rtl8306.c
++++ b/target/linux/generic/files/drivers/net/phy/rtl8306.c
+@@ -930,7 +930,8 @@
+ 
+ 
+ static int
+-rtl8306_fixup(struct phy_device *pdev)
++rtl8306_match_phy_device(struct phy_device *pdev,
++			 const struct phy_driver *)
+ {
+ 	struct rtl_priv priv;
+ 	u16 chipid;
+@@ -944,10 +945,7 @@
+ 	priv.page = -1;
+ 	priv.bus = pdev->mdio.bus;
+ 	chipid = rtl_get(&priv.dev, RTL_REG_CHIPID);
+-	if (chipid == 0x5988)
+-		pdev->phy_id = RTL8306_MAGIC;
+-
+-	return 0;
++	return chipid == 0x5988;
+ }
+ 
+ static int
+@@ -1038,6 +1036,7 @@
+ 	.name		= "Realtek RTL8306S",
+ 	.phy_id		= RTL8306_MAGIC,
+ 	.phy_id_mask	= 0xffffffff,
++	.match_phy_device = &rtl8306_match_phy_device,
+ 	.features	= PHY_BASIC_FEATURES,
+ 	.probe		= &rtl8306_probe,
+ 	.remove		= &rtl8306_remove,
+@@ -1050,7 +1049,6 @@
+ static int __init
+ rtl_init(void)
+ {
+-	phy_register_fixup_for_id("MATCH ANY PHY", rtl8306_fixup);
+ 	return phy_drivers_register(&rtl8306_driver, 1, THIS_MODULE);
+ }
+ 
