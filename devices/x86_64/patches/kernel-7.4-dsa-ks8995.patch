@@ -1,0 +1,28 @@
+Subject: [PATCH] kernel: package the renamed KS8995 driver on 7.4
+
+Linux 7.4 replaced the legacy ks8995 module with the Microchip KSZ
+implementation while retaining CONFIG_NET_DSA_KS8995 as a transition
+symbol. Package the generated modules under their new names.
+
+--- a/package/kernel/linux/modules/netdevices.mk
++++ b/package/kernel/linux/modules/netdevices.mk
+@@ -992,12 +992,16 @@
+ define KernelPackage/dsa-ks8995
+   SUBMENU:=$(NETWORK_DEVICES_MENU)
+   TITLE:=Micrel/Kendin KS8995 Ethernet DSA Switch
+-  DEPENDS:=+kmod-dsa +kmod-dsa-notag
+-  FILES:= $(LINUX_DIR)/drivers/net/dsa/ks8995.ko
++  DEPENDS:=+kmod-dsa +kmod-dsa-notag +kmod-phy-micrel +kmod-regmap-core +kmod-regmap-spi
++  FILES:= \
++	$(LINUX_DIR)/drivers/net/dsa/microchip/ksz_switch.ko \
++	$(LINUX_DIR)/drivers/net/dsa/microchip/ksz_spi.ko \
++	$(LINUX_DIR)/net/dsa/tag_ks8995.ko \
++	$(LINUX_DIR)/net/dsa/tag_ksz.ko
+   KCONFIG:= CONFIG_NET_DSA_KS8995 \
+ 	CONFIG_SPI=y \
+ 	CONFIG_SPI_MASTER=y
+-  AUTOLOAD:=$(call AutoLoad,42,ks8995)
++  AUTOLOAD:=$(call AutoProbe,ksz_spi)
+ endef
+ 
+ define KernelPackage/dsa-ks8995/description
