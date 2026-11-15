@@ -12,7 +12,7 @@ symbol. Package the generated modules under their new names.
    TITLE:=Micrel/Kendin KS8995 Ethernet DSA Switch
 -  DEPENDS:=+kmod-dsa +kmod-dsa-notag
 -  FILES:= $(LINUX_DIR)/drivers/net/dsa/ks8995.ko
-+  DEPENDS:=+kmod-dsa +kmod-dsa-notag +kmod-phy-micrel +kmod-regmap-core +kmod-regmap-spi
++  DEPENDS:=+kmod-dsa +kmod-dsa-notag +kmod-phy-micrel +kmod-regmap-core +kmod-regmap-spi +kmod-pcs-xpcs
 +  FILES:= \
 +	$(LINUX_DIR)/drivers/net/dsa/microchip/ksz_switch.ko \
 +	$(LINUX_DIR)/drivers/net/dsa/microchip/ksz_spi.ko \
