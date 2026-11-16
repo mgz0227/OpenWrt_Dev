@@ -1,0 +1,16 @@
+Subject: [PATCH] batman-adv: preserve feature flags on kernel 7.4
+
+Linux 7.4 no longer reads EXTRA_CFLAGS. Pass the selected feature defines
+through CFLAGS_MODULE so C headers agree with the Kbuild object selection.
+
+--- a/feeds/routing/batman-adv/Makefile
++++ b/feeds/routing/batman-adv/Makefile
+@@ -83,7 +83,7 @@
+ 		$(KERNEL_MAKE_FLAGS) \
+ 		M="$(PKG_BUILD_DIR)/net/batman-adv" \
+ 		$(PKG_EXTRA_KCONFIG) \
+-		EXTRA_CFLAGS="$(PKG_EXTRA_CFLAGS)" \
++		CFLAGS_MODULE="$(PKG_EXTRA_CFLAGS)" \
+ 		NOSTDINC_FLAGS="$(NOSTDINC_FLAGS)" \
+ 		modules
+ endef
