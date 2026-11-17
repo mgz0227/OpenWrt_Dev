@@ -11,6 +11,9 @@ cp -rf --parents rules.mk include target/linux target/Config.in scripts/target-m
 
 cd - || exit 1
 
+rm -rf target/linux/x86
+git_clone_path kernel-7.4 https://github.com/graysky2/openwrt target/linux/x86
+
 
 cd feeds/packages
 rm -rf net/xtables-addons net/jool kernel/v4l2loopback kernel/ovpn-dco libs/libpfring libs/libmariadb 
