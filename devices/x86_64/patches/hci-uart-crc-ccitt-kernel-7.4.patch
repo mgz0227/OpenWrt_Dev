@@ -1,0 +1,16 @@
+Subject: [PATCH] kernel: make kmod-hci-uart depend on crc-ccitt on 7.4
+
+The Linux 7.4 HCI UART driver uses crc-ccitt, so declare the
+module dependency for the 7.4 kernel package.
+
+--- a/package/kernel/linux/modules/bluetooth.mk
++++ b/package/kernel/linux/modules/bluetooth.mk
+@@ -38,7 +38,7 @@ $(eval $(call KernelPackage,bluetooth))
+ define KernelPackage/hci-uart
+   SUBMENU:=$(BLUETOOTH_MENU)
+   TITLE:=Bluetooth HCI UART support
+-  DEPENDS:=+kmod-bluetooth
++  DEPENDS:=+kmod-bluetooth +LINUX_7_4:kmod-lib-crc-ccitt
+   KCONFIG:= \
+ 	CONFIG_BT_HCIUART \
+ 	CONFIG_BT_HCIUART_BCM=n \
