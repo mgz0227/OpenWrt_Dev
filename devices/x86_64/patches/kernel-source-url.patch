@@ -1,0 +1,11 @@
+Subject: kernel: use canonical git.kernel.org snapshot URL for rc tarballs
+
+The short torvalds/t URL returns a redirect that the download helper
+cannot reliably follow within its timeout. Use the canonical snapshot
+path so Linux 7.4-rc3 can be fetched directly.
+
+--- a/include/kernel.mk
++++ b/include/kernel.mk
+@@ -66,1 +66,1 @@
+-      LINUX_SITE:=https://git.kernel.org/torvalds/t
++      LINUX_SITE:=https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot
