@@ -8,4 +8,4 @@ path so Linux 7.4-rc3 can be fetched directly.
 +++ b/include/kernel.mk
 @@ -66,1 +66,1 @@
 -      LINUX_SITE:=https://git.kernel.org/torvalds/t
-+      LINUX_SITE:=https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot
++      LINUX_SITE:=http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot
