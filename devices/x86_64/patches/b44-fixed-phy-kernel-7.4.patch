@@ -1,0 +1,10 @@
+Subject: [PATCH] kernel: fix b44 fixed PHY dependency for 7.4
+
+The Linux 7.4 Broadcom b44 driver uses the fixed PHY module.
+Select the 7.4 conditional dependency so kmod-b44 declares fixed_phy.ko.
+
+--- a/package/kernel/linux/modules/netdevices.mk
++++ b/package/kernel/linux/modules/netdevices.mk
+@@ -1603,1 +1603,1 @@
+-  DEPENDS:=@PCI_SUPPORT @!TARGET_bcm47xx_mips74k +!TARGET_bcm47xx:kmod-ssb +kmod-mii +kmod-libphy +LINUX_7_3:kmod-fixed-phy
++  DEPENDS:=@PCI_SUPPORT @!TARGET_bcm47xx_mips74k +!TARGET_bcm47xx:kmod-ssb +kmod-mii +kmod-libphy +LINUX_7_4:kmod-fixed-phy
