@@ -1,0 +1,10 @@
+Subject: [PATCH] kernel: fix Realtek r8169 phylink dependency for 7.4
+
+The Linux 7.4 r8169 driver uses the phylink module. Select the
+conditional dependency so kmod-r8169 declares phylink.ko.
+
+--- a/package/kernel/linux/modules/netdevices.mk
++++ b/package/kernel/linux/modules/netdevices.mk
+@@ -1383,1 +1383,1 @@ define KernelPackage/r8169
+-  DEPENDS:=@PCI_SUPPORT +kmod-mii +r8169-firmware +kmod-phy-realtek +kmod-mdio-devres
++  DEPENDS:=@PCI_SUPPORT +kmod-mii +r8169-firmware +kmod-phy-realtek +kmod-mdio-devres +LINUX_7_4:kmod-phylink
