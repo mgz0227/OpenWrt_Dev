@@ -1,0 +1,15 @@
+Subject: [PATCH] xray-core: use Go 1.26-compatible release
+
+Xray-core 26.11.9 requires Go 1.27, while the OpenWrt 25.12
+build toolchain provides Go 1.26. Pin the package to the latest
+release that still builds with Go 1.26.
+
+--- a/feeds/miaogongzi/xray-core/Makefile
++++ b/feeds/miaogongzi/xray-core/Makefile
+@@ -1,6 +1,6 @@
+ include $(TOPDIR)/rules.mk
+ 
+ PKG_NAME:=Xray-core
+-PKG_VERSION:=26.11.9
++PKG_VERSION:=26.7.28
+ PKG_RELEASE:=25

@@ -1,0 +1,14 @@
+Subject: [PATCH] kernel: add IIO triggered buffer dependency for dps310 on 7.4
+
+The Linux 7.4 DPS310 driver uses the triggered buffer helpers,
+which must be packaged as a dependency.
+
+--- a/package/kernel/linux/modules/iio.mk
++++ b/package/kernel/linux/modules/iio.mk
+@@ -351,7 +351,7 @@ $(eval $(call KernelPackage,iio-bmp280-spi))
+ define KernelPackage/iio-dps310
+   TITLE:=DPS310/DPS368/DPS422 pressure temperatur sensor
+-  DEPENDS:=+kmod-regmap-i2c
++  DEPENDS:=+kmod-regmap-i2c +LINUX_7_4:kmod-industrialio-triggered-buffer
+   KCONFIG:=CONFIG_DPS310
+   FILES:=$(LINUX_DIR)/drivers/iio/pressure/dps310.ko
