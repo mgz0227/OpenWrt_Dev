@@ -1,0 +1,10 @@
+Subject: [PATCH] kernel: fix Realtek PHY package dependency for 7.4
+
+The Linux 7.4 Realtek PHY driver uses the generic PHY package module.
+Select the 7.4 conditional dependency so phy_package.ko is included.
+
+--- a/package/kernel/linux/modules/netdevices.mk
++++ b/package/kernel/linux/modules/netdevices.mk
+@@ -583,1 +583,1 @@
+-   DEPENDS:=+kmod-libphy +kmod-hwmon-core +LINUX_7_3:kmod-phy-package
++   DEPENDS:=+kmod-libphy +kmod-hwmon-core +LINUX_7_4:kmod-phy-package
