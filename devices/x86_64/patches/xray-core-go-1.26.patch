@@ -6,10 +6,6 @@ release that still builds with Go 1.26.
 
 --- a/feeds/miaogongzi/xray-core/Makefile
 +++ b/feeds/miaogongzi/xray-core/Makefile
-@@ -1,5 +1,5 @@
- include $(TOPDIR)/rules.mk
- 
- PKG_NAME:=Xray-core
+@@ -4,1 +4,1 @@
 -PKG_VERSION:=26.11.9
 +PKG_VERSION:=26.7.28
- PKG_RELEASE:=25

@@ -5,10 +5,6 @@ which must be packaged as a dependency.
 
 --- a/package/kernel/linux/modules/iio.mk
 +++ b/package/kernel/linux/modules/iio.mk
-@@ -352,5 +352,5 @@ define KernelPackage/iio-dps310
- define KernelPackage/iio-dps310
-   TITLE:=DPS310/DPS368/DPS422 pressure temperatur sensor
+@@ -354,1 +354,1 @@
 -  DEPENDS:=+kmod-regmap-i2c
 +  DEPENDS:=+kmod-regmap-i2c +LINUX_7_4:kmod-industrialio-triggered-buffer
-   KCONFIG:=CONFIG_DPS310
-   FILES:=$(LINUX_DIR)/drivers/iio/pressure/dps310.ko

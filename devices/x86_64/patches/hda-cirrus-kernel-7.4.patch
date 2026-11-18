@@ -1,0 +1,10 @@
+Subject: [PATCH] kernel: fix Cirrus HDA dependency for 7.4
+
+The Linux 7.4 Cirrus HDA codec driver uses the scodec component
+module, so select its 7.4 package dependency.
+
+--- a/package/kernel/linux/modules/sound.mk
++++ b/package/kernel/linux/modules/sound.mk
+@@ -550,1 +550,1 @@
+-  $(call AddDepends/sound,kmod-sound-hda-core +LINUX_7_3:kmod-snd-hda-scodec-component)
++  $(call AddDepends/sound,kmod-sound-hda-core +LINUX_7_4:kmod-snd-hda-scodec-component)
