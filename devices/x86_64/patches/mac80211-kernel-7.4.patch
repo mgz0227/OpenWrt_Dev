@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/package/kernel/mac80211/patches/subsys/999-kernel-7.4-multicast-accessors.patch
-@@ -0,0 +1,50 @@
+@@ -0,0 +1,39 @@
 +Subject: [PATCH] mac80211: use multicast address list accessors on kernel 7.4
 +
 +Linux 7.4 renamed the raw count field. Backport the wireless reader
@@ -8,17 +8,6 @@
 +
 +Source: https://github.com/torvalds/linux/commit/778a262a6c690621a5c37d2a1cebc88e4585a870
 +
-+--- a/net/mac80211/driver-ops.h
-++++ b/net/mac80211/driver-ops.h
-+@@ -187,7 +187,7 @@ static inline u64 drv_prepare_multicast(struct ieee80211_local *local,
-+ {
-+ 	u64 ret = 0;
-+ 
-+-	trace_drv_prepare_multicast(local, mc_list->count);
-++	trace_drv_prepare_multicast(local, netdev_hw_addr_list_count(mc_list));
-+ 
-+ 	if (local->ops->prepare_multicast)
-+ 		ret = local->ops->prepare_multicast(&local->hw, mc_list);
 +--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
 ++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
 +@@ -704,17 +704,17 @@ static void wilc_set_multicast_list(struct net_device *dev)

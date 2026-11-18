@@ -247,3 +247,66 @@ backport patch that is applied with fuzz and add the const-idmap fix.
 + 		struct dentry *dentry, umode_t mode, dev_t rdev)
 + #else
 + static int ntfs_mknod(struct user_namespace *mnt_userns, struct inode *dir,
+
+--- /dev/null
++++ b/package/kernel/ntfs/patches/003-iomap-iter-next.patch
+@@ -0,0 +1,59 @@
++diff --git a/iomap.c b/iomap.c
++index 8a4c805..9ce01a4 100644
++--- a/iomap.c
+++++ b/iomap.c
++@@ -480,0 +481,8 @@ static int ntfs_seek_iomap_begin(struct inode *inode, loff_t offset, loff_t leng
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(7, 4, 0)
+++static int ntfs_zero_read_iomap_ops(const struct iomap_iter *iter,
+++		struct iomap *iomap, struct iomap *srcmap)
+++{
+++	return iomap_iter_next(iter, iomap, srcmap, ntfs_seek_iomap_begin,
+++			ntfs_zero_read_iomap_end);
+++}
+++#else
++@@ -484,0 +493 @@ static const struct iomap_ops ntfs_zero_read_iomap_ops = {
+++#endif
++@@ -514,0 +524,6 @@ static const struct iomap_ops ntfs_zero_read_iomap_ops = {
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(7, 4, 0)
+++DEFINE_IOMAP_ITER_NEXT_END(ntfs_read_iomap_ops, ntfs_read_iomap_begin,
+++		ntfs_read_iomap_end)
+++DEFINE_IOMAP_ITER_NEXT_END(ntfs_seek_iomap_ops, ntfs_seek_iomap_begin,
+++		ntfs_read_iomap_end)
+++#else
++@@ -523,0 +539 @@ const struct iomap_ops ntfs_seek_iomap_ops = {
+++#endif
++@@ -981,0 +998,4 @@ static int ntfs_write_iomap_end(struct inode *inode, loff_t pos, loff_t length,
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(7, 4, 0)
+++DEFINE_IOMAP_ITER_NEXT_END(ntfs_write_iomap_ops, ntfs_write_iomap_begin,
+++		ntfs_write_iomap_end)
+++#else
++@@ -985,0 +1006 @@ const struct iomap_ops ntfs_write_iomap_ops = {
+++#endif
++@@ -994,0 +1016,4 @@ static int ntfs_page_mkwrite_iomap_begin(struct inode *inode, loff_t offset,
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(7, 4, 0)
+++DEFINE_IOMAP_ITER_NEXT_END(ntfs_page_mkwrite_iomap_ops,
+++		ntfs_page_mkwrite_iomap_begin, ntfs_write_iomap_end)
+++#else
++@@ -998,0 +1024 @@ const struct iomap_ops ntfs_page_mkwrite_iomap_ops = {
+++#endif
++@@ -1007,0 +1034,4 @@ static int ntfs_dio_iomap_begin(struct inode *inode, loff_t offset,
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(7, 4, 0)
+++DEFINE_IOMAP_ITER_NEXT_END(ntfs_dio_iomap_ops, ntfs_dio_iomap_begin,
+++		ntfs_write_iomap_end)
+++#else
++@@ -1011,0 +1042 @@ const struct iomap_ops ntfs_dio_iomap_ops = {
+++#endif
++diff --git a/iomap.h b/iomap.h
++index ddc4353..0eb096b 100644
++--- a/iomap.h
+++++ b/iomap.h
++@@ -14,0 +15,7 @@
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(7, 4, 0)
+++DECLARE_IOMAP_ITER_NEXT(ntfs_write_iomap_ops);
+++DECLARE_IOMAP_ITER_NEXT(ntfs_read_iomap_ops);
+++DECLARE_IOMAP_ITER_NEXT(ntfs_seek_iomap_ops);
+++DECLARE_IOMAP_ITER_NEXT(ntfs_page_mkwrite_iomap_ops);
+++DECLARE_IOMAP_ITER_NEXT(ntfs_dio_iomap_ops);
+++#else
++@@ -19,0 +27 @@ extern const struct iomap_ops ntfs_dio_iomap_ops;
+++#endif
