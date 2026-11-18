@@ -5,7 +5,7 @@ which must be packaged as a dependency.
 
 --- a/package/kernel/linux/modules/iio.mk
 +++ b/package/kernel/linux/modules/iio.mk
-@@ -351,7 +351,7 @@ $(eval $(call KernelPackage,iio-bmp280-spi))
+@@ -352,5 +352,5 @@ define KernelPackage/iio-dps310
  define KernelPackage/iio-dps310
    TITLE:=DPS310/DPS368/DPS422 pressure temperatur sensor
 -  DEPENDS:=+kmod-regmap-i2c
