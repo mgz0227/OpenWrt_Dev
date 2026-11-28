@@ -23,11 +23,7 @@ rm -rf target/linux/generic/backport-6.18/707-v7.3-net-phylink-record-the-PHY-on
 #git_clone_path 18 https://github.com/graysky2/openwrt target/linux/generic target/linux/generic
 
 
-#以下不能动
-
-wget -N https://raw.githubusercontent.com/mgz0227/openwrt/refs/heads/6.18.y/target/linux/generic/kernel-6.18 -P target/linux/generic/
-
-#结束
+# Keep the bpf-headers kernel version paired with the generic patches copied above.
 
 #sed -i 's/kmod-r8169/kmod-r8168/' target/linux/x86/image/64.mk
 
